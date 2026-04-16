@@ -29,13 +29,14 @@
 
 <nav class="navbar navbar-expand-lg sticky-top bg-white">
     <div class="container">
-        <a class="navbar-brand" href="#"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/51/TVB_logo.svg/1200px-TVB_logo.svg.png" width="80"></a>
+        <a class="navbar-brand" href="#"><img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png" width="80"></a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="#">主頁</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">無綫新聞</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">娛樂焦點</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">節目重溫</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">健康生活</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">愛心基金</a></li>
             </ul>
             <div class="d-flex align-items-center">
                 <input class="search-bar me-3" type="text" placeholder="搜尋">
@@ -49,19 +50,65 @@
     <div class="main-banner">
         <div class="row g-0 bg-dark text-white align-items-center">
             <div class="col-md-8">
-                <img src="https://via.placeholder.com/1200x500/A0A0A0/FFFFFF?text=TVB+Building" class="img-fluid">
+                <img src="https://www.tvb.com/thumbor/5UTxyelo7_X7ifiVzTdIPPnjQio=/1530x0/filters:water(21):quality(80)/public/tvbcom/article/images/202603/3641c734-2637-498c-9148-2ecab728418c.png" class="img-fluid">
             </div>
             <div class="col-md-4 p-4">
                 <h2>TVB實現轉正溢利5,900萬</h2>
-                <p>電視廣播有限公司發布截至2025年12月31日止全年業績...</p>
+                <p>TVB業績2025｜TVB實現轉正溢利5,900萬 本集團EBITDA港幣3.65億</p>
             </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-12 d-flex align-items-center">
+            <div style="width: 4px; height: 22px; background-color: #0056b3; margin-right: 12px;"></div>
+            <h4 class="fw-bold mb-0">最新內容</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="row">
+                {% for video in videos[:4] %}
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm h-100 rounded-3">
+                        <div class="ratio ratio-16x9">
+                            <img src="{{ video[2] }}" class="card-img-top rounded-top-3" style="object-fit: cover;">
+                        </div>
+                        <div class="card-body p-2">
+                            <h6 class="fw-bold mb-1 text-truncate-2" style="font-size: 14.5px;">{{ video[0] }}</h6>
+                            <small class="text-muted" style="font-size: 12px;">{{ video[1] }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-4 ps-lg-4 d-none d-lg-block">
+            {% for video in videos[4:9] %}
+            <div class="d-flex align-items-start mb-3 border-bottom pb-2">
+                <div style="flex-shrink: 0; width: 140px;"> 
+                    <div class="ratio ratio-16x9">
+                        <img src="{{ video[2] }}" class="rounded-2" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="ms-3 overflow-hidden">
+                    <h6 class="fw-bold mb-1 text-truncate-2" style="font-size: 14px; line-height: 1.3;">
+                        {{ video[0] }}
+                    </h6>
+                    <small class="text-muted" style="font-size: 11px;">{{ video[1] }}</small>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
 <div class="cookie-banner" id="cookieBox">
     <div>
-        🍪 本服務使用 Cookies 以維持可靠性... <a href="#" class="text-info">Cookies 政策</a>
+        🍪 本服務使用 Cookies 以維持可靠性  <a href="#" class="text-info">Cookies 政策</a>
     </div>
     <button class="btn btn-primary btn-sm ms-3" onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
 </div>
