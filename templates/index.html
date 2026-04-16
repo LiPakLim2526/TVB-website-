@@ -8,14 +8,18 @@
     <style>
         body { background-color: #ffffff; color: #333; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
         
+
+        /* 導航欄樣式 */
         .navbar { border-bottom: 1px solid #eee; padding: 10px 0; }
         .nav-link { color: #333 !important; font-weight: 500; margin-right: 15px; }
         .search-bar { background-color: #f2f2f2; border-radius: 20px; border: none; padding: 5px 15px; }
 
+        /* Banner 樣式微調 */
         .main-banner-wrapper { margin-top: 20px; }
         .carousel-inner { border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        .banner-content-box { height: 400px; } 
+        /* 🚩 統一 Banner 高度與圖片填充方式 */
+        .banner-content-box { height: 400px; } /* 固定容器高度 */
         .banner-img { 
             object-fit: cover; 
             height: 100%; 
@@ -29,7 +33,60 @@
             overflow: hidden;
         }
 
-        /* Cookie */
+        .schedule-container {
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            background: #fff;
+        }
+        .schedule-time-card {
+            background-color: #0056b3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .channel-item {
+            flex: 1;
+            padding: 15px;
+            border-right: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .channel-item:last-child { border-right: none; }
+        .channel-item:hover { background-color: #f8f9fa; }
+        
+        .channel-header { display: flex; align-items: center; margin-bottom: 8px; }
+        .channel-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-right: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .program-title { font-size: 14px; font-weight: 500; color: #333; }
+
+        .footer-rainbow-bar { height: 4px; width: 100%; display: flex; margin-top: 80px; }
+        .rainbow-blue { background-color: #00AEEF; flex: 1; }
+        .rainbow-green { background-color: #8CC63F; flex: 1; }
+        .rainbow-red { background-color: #ED1C24; flex: 1; }
+
+        .footer-main { padding: 60px 0 30px; background-color: #fff; }
+        .footer-column h6 { font-weight: bold; margin-bottom: 20px; color: #000; }
+        .footer-link { display: block; color: #666; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
+        .footer-link:hover { color: #0056b3; }
+
+        .footer-bottom { border-top: 1px solid #eee; padding-top: 30px; margin-top: 40px; }
+        .footer-logo { width: 100px; margin-bottom: 15px; }
+        .copyright { font-size: 12px; color: #999; }
+        
+        .social-icons a { color: #333; margin-left: 15px; font-size: 20px; text-decoration: none; }
+        .app-icons img { height: 32px; margin-right: 10px; border-radius: 6px; border: 1px solid #eee; }
+
         .cookie-banner {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 1000px; background-color: rgba(26, 26, 26, 0.95);
@@ -37,7 +94,23 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .last-child-border-0:last-child { border-bottom: none !important; }
+        .social-icons { display: flex; gap: 18px; align-items: center; }
+        .social-icons a { color: #333; font-size: 20px; text-decoration: none; transition: color 0.2s; }
+        .social-icons a:hover { color: #0056b3; }
+        
+        .custom-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; filter: grayscale(0%); }
+        .custom-icon:hover { filter: none; }
+
+        .app-icons img { height: 32px; margin-right: 12px; border-radius: 6px; border: 1px solid #f0f0f0; }
+        .copyright { font-size: 12px; color: #999; margin-top: 15px; }
+
+        .cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; background-color: rgba(26, 26, 26, 0.95); color: white; padding: 15px 25px; border-radius: 10px; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        
+        @media (max-width: 768px) {
+            .schedule-container { flex-direction: column; }
+            .schedule-time-card { min-width: 100%; padding: 10px; }
+            .channel-item { border-right: none; border-bottom: 1px solid #eee; }
+        }
     </style>
 </head>
 <body>
@@ -70,8 +143,7 @@
             <button type="button" data-bs-target="#topBanner" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#topBanner" data-bs-slide-to="2"></button>
         </div>
-
-        <div class="carousel-inner">
+       <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="5000">
                 <div class="row g-0 bg-dark text-white align-items-center banner-content-box">
                     <div class="col-md-8 h-100">
@@ -118,6 +190,7 @@
         <button class="carousel-control-next" type="button" data-bs-target="#topBanner" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
         </button>
+        
     </div>
 </div>
 
@@ -128,23 +201,20 @@
             <h3 class="fw-bold mb-0">最新內容</h3>
         </div>
     </div>
-
     <div class="row">
-        <div class="col-lg-8 col-md-12">
+        <div class="col-lg-8">
             <div class="row">
                 {% for video in videos[:4] %}
                 <div class="col-md-6 mb-4">
                     <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
                         <div class="ratio ratio-16x9">
-                            <img src="{{ video[2] }}" class="card-img-top" style="object-fit: cover;" alt="{{ video[0] }}">
+                            <img src="{{ video[2] }}" class="card-img-top" style="object-fit: cover;" onerror="this.src='https://via.placeholder.com/640x360?text=TVB+Video'">
                         </div>
                         <div class="card-body p-3">
-                            <h6 class="fw-bold mb-2 text-truncate-2" style="min-height: 2.8em; line-height: 1.4;">
-                                {{ video[0] }}
-                            </h6>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold mb-2 text-truncate-2">{{ video[0] }}</h6>
+                            <div class="d-flex justify-content-between">
                                 <span class="badge bg-light text-dark fw-normal">{{ video[1] }}</span>
-                                <small class="text-muted" style="font-size: 11px;">剛剛更新</small>
+                                <small class="text-muted">剛剛更新</small>
                             </div>
                         </div>
                     </div>
@@ -152,21 +222,14 @@
                 {% endfor %}
             </div>
         </div>
-
         <div class="col-lg-4 ps-lg-4">
             <div class="bg-white p-3 rounded-3 shadow-sm border">
                 <h6 class="fw-bold mb-3 text-secondary">推薦影片</h6>
                 {% for video in videos[4:10] %}
-                <div class="d-flex align-items-start mb-3 border-bottom pb-2 last-child-border-0">
-                    <div style="flex-shrink: 0; width: 130px;">
-                        <div class="ratio ratio-16x9">
-                            <img src="{{ video[2] }}" class="rounded-2" style="object-fit: cover;" alt="{{ video[0] }}">
-                        </div>
-                    </div>
+                <div class="d-flex align-items-start mb-3 border-bottom pb-2">
+                    <img src="{{ video[2] }}" class="rounded-2" style="width: 130px; aspect-ratio: 16/9; object-fit: cover;" onerror="this.src='https://via.placeholder.com/130x73?text=TVB'">
                     <div class="ms-3 overflow-hidden">
-                        <h6 class="fw-bold mb-1 text-truncate-2" style="font-size: 13.5px; line-height: 1.3;">
-                            {{ video[0] }}
-                        </h6>
+                        <h6 class="fw-bold mb-1 text-truncate-2" style="font-size: 13.5px;">{{ video[0] }}</h6>
                         <small class="text-muted" style="font-size: 11px;">{{ video[1] }} · 1小時前</small>
                     </div>
                 </div>
@@ -176,10 +239,137 @@
     </div>
 </div>
 
-<div class="cookie-banner" id="cookieBox">
-    <div>
-        🍪 本服務使用 Cookies 以維持可靠性  <a href="#" class="text-info">Cookies 政策</a>
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <h4 class="fw-bold mb-0">節目表</h4>
+            <button class="btn btn-light btn-sm ms-3 border shadow-sm rounded-pill" style="font-size: 12px; padding: 2px 12px;">
+                <span class="me-1">↻</span> 按此更新
+            </button>
+        </div>
+        <a href="#" class="text-secondary small text-decoration-none">查看更多 ></a>
     </div>
+
+    <div class="schedule-container shadow-sm">
+        <div class="schedule-time-card">
+            <div style="font-size: 13px; opacity: 0.9;">2026-04-16(四)</div>
+            <div class="fw-bold fs-5">11:52 晚上</div>
+        </div>
+
+        <div class="channel-item">
+            <div class="channel-header">
+                <span class="channel-tag" style="background-color: #f44336;">81</span>
+                <span class="fw-bold small">翡翠台</span>
+            </div>
+            <div class="program-title">農本方參苓白朮散呈獻:天氣報告[粵]</div>
+        </div>
+
+        <div class="channel-item">
+            <div class="channel-header">
+                <span class="channel-tag" style="background-color: #e91e63;">82</span>
+                <span class="fw-bold small">TVB+</span>
+            </div>
+            <div class="program-title">靈活過三關[粵]</div>
+        </div>
+
+        <div class="channel-item">
+            <div class="channel-header">
+                <span class="channel-tag" style="background-color: #4caf50;">83</span>
+                <span class="fw-bold small">無綫新聞台</span>
+            </div>
+            <div class="program-title">晚間新聞 及 時事通識</div>
+        </div>
+
+        <div class="channel-item">
+            <div class="channel-header">
+                <span class="channel-tag" style="background-color: #673ab7;">84</span>
+                <span class="fw-bold small">Pearl</span>
+            </div>
+            <div class="program-title">明珠930:尼羅河謀殺案[英]</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-rainbow-bar">
+    <div class="rainbow-blue"></div>
+    <div class="rainbow-green"></div>
+    <div class="rainbow-red"></div>
+</div>
+
+<footer class="footer-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 footer-column">
+                <h6>本集團成員</h6>
+                <a href="#" class="footer-link">鄰住買</a>
+                <a href="#" class="footer-link">無綫新聞</a>
+                <a href="#" class="footer-link">myTV SUPER</a>
+                <a href="#" class="footer-link">TVB Anywhere</a>
+                <a href="#" class="footer-link">TVB Music Group</a>
+                <a href="#" class="footer-link">愛心基金</a>
+            </div>
+            <div class="col-md-2 footer-column">
+                <h6>關於TVB</h6>
+                <a href="#" class="footer-link">公司業務</a>
+                <a href="#" class="footer-link">董事局成員</a>
+                <a href="#" class="footer-link">行政人員</a>
+                <a href="#" class="footer-link">年度報表</a>
+                <a href="#" class="footer-link">業績公佈</a>
+            </div>
+            <div class="col-md-2 footer-column">
+                <h6>TVB藝人</h6>
+                <a href="#" class="footer-link">男藝員</a>
+                <a href="#" class="footer-link">女藝員</a>
+                <a href="#" class="footer-link">主持</a>
+                <a href="#" class="footer-link">歌手</a>
+            </div>
+            <div class="col-md-2 footer-column">
+                <h6>TVB營業部</h6>
+                <a href="#" class="footer-link">廣告查詢</a>
+                <a href="#" class="footer-link">TVB Event Power</a>
+                <a href="#" class="footer-link">廣告價目表</a>
+            </div>
+            <div class="col-md-2 footer-column">
+                <h6>常見問題</h6>
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">TVB會員</a>
+                <a href="#" class="footer-link">聯絡我們</a>
+                <a href="#" class="footer-link">網上查詢</a>
+            </div>
+            <div class="col-md-2 footer-column">
+                <h6>服務條款</h6>
+                <a href="#" class="footer-link">本網站使用條款及條件</a>
+                <a href="#" class="footer-link">私隱政策聲明</a>
+                <a href="#" class="footer-link">個人資料收集聲明</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex align-items-center flex-wrap">
+                <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png" class="footer-logo me-4">
+                <div class="app-icons d-flex">
+                    <img src="https://www.tvb.com/thumbor/JSbENAjHDFxb0_Fqyqn9XXEdvWg=/512x512/public/tvbcom/footer/images/202401/0bae42dc-e1f6-4264-becd-4a6338a529f6.png" title="無綫新聞">
+                    <img src="https://www.tvb.com/thumbor/7oIVcDP53Db9rJyrcxfn9BgMWg8=/512x512/public/tvbcom/footer/images/202401/9b6b6338-9c8d-4249-a101-473b44ca8fe4.png" title="myTV SUPER" style="height:25px; margin-top:4px;">
+                </div>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#" title="Facebook"><img src="https://www.tvb.com/thumbor/jHTkLs30f1i8YrWiDXFx-OwLqiU=/32x32/public/tvbcom/footer/images/202509/e7323e1f-70f0-4b52-9ad9-309e40dc16f5.svg" class="custom-icon"></a>
+                <a href="#" title="Instagram"><img src="https://www.tvb.com/thumbor/kDgbPwaVNTm5I2u4LByFYB1ECCY=/32x32/public/tvbcom/footer/images/202509/73fcf01e-ef1e-4a03-81cf-f17bce4e57d3.svg" class="custom-icon"></a>
+                <a href="#" title="YouTube"><img src="https://www.tvb.com/thumbor/vFhoHNw0mrtsPv2dx4oMOF2sTdo=/32x32/public/tvbcom/footer/images/202509/372c7afc-eb25-4f66-9811-ffd0909e14df.svg" class="custom-icon"></a>
+                <a href="#" title="X"><img src="https://www.tvb.com/thumbor/DvUQmQGqjyRbe06iTF3A7ZKW6Ek=/32x32/public/tvbcom/footer/images/202509/574e870f-4296-4f5a-9f9b-f8a4aa1d7686.svg" class="custom-icon"></a>
+                <a href="#" title="WeChat"><img src="https://www.tvb.com/thumbor/YYgwX7gPYGVGmhZVSt8wk6VDs-w=/32x32/public/tvbcom/footer/images/202509/6a87e9af-005f-4506-9a6b-97178babbd4e.svg" class="custom-icon"></a>
+                <a href="#" title="TikTok"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" class="custom-icon"></a>
+            </div>
+        </div>
+        <div class="copyright text-md-start">
+            Copyright ©2026 Television Broadcasts Limited
+        </div>
+    </div>
+</footer>
+
+<div class="cookie-banner" id="cookieBox">
+    <div>🍪 本服務使用 Cookies 以維持可靠性 <a href="#" class="text-info">Cookies 政策</a></div>
     <button class="btn btn-primary btn-sm ms-3" onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
 </div>
 
