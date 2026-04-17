@@ -115,20 +115,26 @@
 
 <nav class="navbar navbar-expand-lg sticky-top bg-white">
     <div class="container">
-        <a class="navbar-brand" href="#"><img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png" width="80"></a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png" width="80">
+        </a>
+        
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="#">主頁</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">娛樂焦點</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">主頁</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">娛樂焦點</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">節目重溫</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">健康生活</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">愛心基金</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">藝人</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">串流平台</a></li>
             </ul>
+            
             <div class="d-flex align-items-center">
                 <input class="search-bar me-3" type="text" placeholder="搜尋">
-                <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30">
+                <a href="{{ url_for('login_page') }}">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="cursor: pointer;">
+                </a>
             </div>
         </div>
     </div>
