@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVB - 主頁</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .navbar {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+
+        .search-bar {
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            border: none;
+            padding: 5px 15px;
+        }
+
+        .main-banner-wrapper {
+            margin-top: 20px;
+        }
+
+        .carousel-inner {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner-content-box {
+            height: 400px;
+        }
+
+        .banner-img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-weight: 500;
+            padding: 8px 0;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            color: #0066cc;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        /* 视频卡片 & 动画效果 */
+        .video-card {
+            margin-bottom: 24px;
+        }
+
+        .card-thumb {
+            position: relative;
+            display: block;
+            border-radius: 14px;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .card-thumb img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        /* 悬浮：图片放大 不上移 */
+        .card-thumb:hover img {
+            transform: scale(1.08);
+        }
+
+        /* 播放按钮 */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        /* 悬浮 → 播放按钮变黑 */
+        .card-thumb:hover .play-btn {
+            background: #000;
+        }
+
+        /* 文字 */
+        .card-info h3 {
+            font-size: 16px;
+            margin: 10px 0 4px;
+            font-weight: 500;
+        }
+
+        .card-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 广告样式 */
+        .ad-banner {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .ad-label {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: #ff6600;
+            color: #fff;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .schedule-container {
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            background: #fff;
+        }
+
+        .schedule-time-card {
+            background-color: #0056b3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .channel-item {
+            flex: 1;
+            padding: 15px;
+            border-right: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .channel-item:last-child {
+            border-right: none;
+        }
+
+        .channel-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .channel-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-right: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .program-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .footer-rainbow-bar {
+            height: 4px;
+            width: 100%;
+            display: flex;
+            margin-top: 80px;
+        }
+
+        .rainbow-blue {
+            background-color: #00AEEF;
+            flex: 1;
+        }
+
+        .rainbow-green {
+            background-color: #8CC63F;
+            flex: 1;
+        }
+
+        .rainbow-red {
+            background-color: #ED1C24;
+            flex: 1;
+        }
+
+        .footer-main {
+            padding: 60px 0 30px;
+            background-color: #fff;
+        }
+
+        .footer-column h6 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .footer-link {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-link:hover {
+            color: #0056b3;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+            margin-top: 40px;
+        }
+
+        .footer-logo {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .social-icons a {
+            color: #333;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-icons a:hover {
+            color: #0056b3;
+        }
+
+        .custom-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            vertical-align: middle;
+            filter: grayscale(0%);
+        }
+
+        .app-icons img {
+            height: 32px;
+            margin-right: 12px;
+            border-radius: 6px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 标签切换核心样式 */
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .tabs {
+            margin-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .tab-btn.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* 广告标签样式 */
+        .ad-label {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 2px 6px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .ad-card {
+            position: relative;
+            display: block;
+        }
+
+        .ad-banner img {
+            width: 100%;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg sticky-top bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
+                    width="80" alt="TVB Logo">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/funnyhot">娛樂焦點</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/videos">節目重溫</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">健康生活</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">愛心基金</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">藝人</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">串流平台</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <input class="search-bar me-3" type="text" placeholder="搜尋">
+                    <a class="nav-link p-0" href="{{ url_for('login') }}">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" alt="登入">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+ <div class="container my-4">
+    <!-- 标签按钮 -->
+    <div class="tabs">
+        <button class="tab-btn" data-target="drama">劇集重溫</button>
+        <button class="tab-btn active" data-target="variety">綜藝精華</button>
+        <button class="tab-btn" data-target="topic">專題系列</button>
+    </div>
+
+    <!-- 顶部 VTC 广告（永久显示） -->
+    <div class="my-4">
+        <div class="ad-banner">
+            <a href="https://www.vtc.edu.hk/tc/home.html" style="text-decoration: none;" target="_blank">
+                <img src="{{ url_for('static', filename='img/AD2.png') }}" alt="廣告"
+                    style="width: 100%; height: 180px; object-fit: contain; background: #fff; border-radius: 12px; display: block;">
+                <span class="ad-label">AD</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 标签内容容器（核心修复） -->
+    <div class="tab-content">
+        <!-- ====================== -->
+        <!-- 1. 劇集重溫 8个卡片 -->
+        <!-- ====================== -->
+        <div class="tab-pane" id="drama">
+            <h1 class="mb-4">劇集重溫</h1>
+            <div class="row g-4">
+                <!-- 卡片1 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 9小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片2 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- PS广告卡片 -->
+                <div class="col-md-4">
+                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
+                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                        <span class="ad-label">AD</span>
+                    </a>
+                </div>
+                <!-- 卡片4 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片5 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片6 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片7 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 卡片8 -->
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>巾帼枭雄之义海豪情</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">劇集重溫 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部横幅广告 -->
+            <div class="ad-banner my-4">
+                <a href="https://store.playstation.com" target="_blank">
+                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                    <span class="ad-label">AD</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- 2. 綜藝精華 8个卡片 -->
+        <!-- ====================== -->
+        <div class="tab-pane active" id="variety">
+            <h1 class="mb-4">綜藝精華</h1>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 9小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
+                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                        <span class="ad-label">AD</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>综艺热门片段</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">綜藝精華 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-banner my-4">
+                <a href="https://store.playstation.com" target="_blank">
+                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                    <span class="ad-label">AD</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- 3. 專題系列 8个卡片 -->
+        <!-- ====================== -->
+        <div class="tab-pane" id="topic">
+            <h1 class="mb-4">專題系列</h1>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 9小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
+                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                        <span class="ad-label">AD</span>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="video-card">
+                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
+                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
+                            <div class="play-btn">▶</div>
+                        </a>
+                        <div class="card-info">
+                            <h3>专题系列视频</h3>
+                            <p>非凡桌面清理大師</p>
+                            <span class="time">專題系列 19小時前</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ad-banner my-4">
+                <a href="https://store.playstation.com" target="_blank">
+                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                    <span class="ad-label">AD</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- 底部 -->
+    <div class="footer-rainbow-bar">
+        <div class="rainbow-blue"></div>
+        <div class="rainbow-green"></div>
+        <div class="rainbow-red"></div>
+    </div>
+
+    <footer class="footer-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 footer-column">
+                    <h6>本集團成員</h6>
+                    <a href="#" class="footer-link">鄰住買</a>
+                    <a href="#" class="footer-link">無綫新聞</a>
+                    <a href="#" class="footer-link">myTV SUPER</a>
+                    <a href="#" class="footer-link">TVB Anywhere</a>
+                    <a href="#" class="footer-link">TVB Music Group</a>
+                    <a href="#" class="footer-link">愛心基金</a>
+                </div>
+                <div class="col-md-2 footer-column">
+                    <h6>關於TVB</h6>
+                    <a href="#" class="footer-link">公司業務</a>
+                    <a href="#" class="footer-link">董事局成員</a>
+                    <a href="#" class="footer-link">行政人員</a>
+                    <a href="#" class="footer-link">年度報表</a>
+                    <a href="#" class="footer-link">業績公佈</a>
+                </div>
+                <div class="col-md-2 footer-column">
+                    <h6>TVB藝人</h6>
+                    <a href="#" class="footer-link">男藝員</a>
+                    <a href="#" class="footer-link">女藝員</a>
+                    <a href="#" class="footer-link">主持</a>
+                    <a href="#" class="footer-link">歌手</a>
+                </div>
+                <div class="col-md-2 footer-column">
+                    <h6>TVB營業部</h6>
+                    <a href="#" class="footer-link">廣告查詢</a>
+                    <a href="#" class="footer-link">TVB Event Power</a>
+                    <a href="#" class="footer-link">廣告價目表</a>
+                </div>
+                <div class="col-md-2 footer-column">
+                    <h6>常見問題</h6>
+                    <a href="#" class="footer-link">FAQ</a>
+                    <a href="#" class="footer-link">TVB會員</a>
+                    <a href="#" class="footer-link">聯絡我們</a>
+                    <a href="#" class="footer-link">網上查詢</a>
+                </div>
+                <div class="col-md-2 footer-column">
+                    <h6>服務條款</h6>
+                    <a href="#" class="footer-link">本網站使用條款及條件</a>
+                    <a href="#" class="footer-link">私隱政策聲明</a>
+                    <a href="#" class="footer-link">個人資料收集聲明</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+                <div class="d-flex align-items-center flex-wrap">
+                    <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
+                        class="footer-logo me-4">
+                    <div class="app-icons d-flex">
+                        <img src="https://www.tvb.com/thumbor/JSbENAjHDFxb0_Fqyqn9XXEdvWg=/512x512/public/tvbcom/footer/images/202401/0bae42dc-e1f6-4264-becd-4a6338a529f6.png"
+                            title="無綫新聞">
+                        <img src="https://www.tvb.com/thumbor/7oIVcDP53Db9rJyrcxfn9BgMWg8=/512x512/public/tvbcom/footer/images/202401/9b6b6338-9c8d-4249-a101-473b44ca8fe4.png"
+                            title="myTV SUPER" style="height:25px; margin-top:4px;">
+                    </div>
+                </div>
+
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><img
+                            src="https://www.tvb.com/thumbor/jHTkLs30f1i8YrWiDXFx-OwLqiU=/32x32/public/tvbcom/footer/images/202509/e7323e1f-70f0-4b52-9ad9-309e40dc16f5.svg"
+                            class="custom-icon"></a>
+                    <a href="#" title="Instagram"><img
+                            src="https://www.tvb.com/thumbor/kDgbPwaVNTm5I2u4LByFYB1ECCY=/32x32/public/tvbcom/footer/images/202509/73fcf01e-ef1e-4a03-81cf-f17bce4e57d3.svg"
+                            class="custom-icon"></a>
+                    <a href="#" title="YouTube"><img
+                            src="https://www.tvb.com/thumbor/vFhoHNw0mrtsPv2dx4oMOF2sTdo=/32x32/public/tvbcom/footer/images/202509/372c7afc-eb25-4f66-9811-ffd0909e14df.svg"
+                            class="custom-icon"></a>
+                    <a href="#" title="X"><img
+                            src="https://www.tvb.com/thumbor/DvUQmQGqjyRbe06iTF3A7ZKW6Ek=/32x32/public/tvbcom/footer/images/202509/574e870f-4296-4f5a-9f9b-f8a4aa1d7686.svg"
+                            class="custom-icon"></a>
+                    <a href="#" title="WeChat"><img
+                            src="https://www.tvb.com/thumbor/YYgwX7gPYGVGmhZVSt8wk6VDs-w=/32x32/public/tvbcom/footer/images/202509/6a87e9af-005f-4506-9a6b-97178babbd4e.svg"
+                            class="custom-icon"></a>
+                    <a href="#" title="TikTok"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
+                            class="custom-icon"></a>
+                </div>
+            </div>
+            <div class="copyright text-md-start">
+                Copyright ©2026 Television Broadcasts Limited
+            </div>
+        </div>
+    </footer>
+
+    <div class="cookie-banner" id="cookieBox">
+        <div>🍪 本服務使用 Cookies 以維持可靠性 <a href="#" class="text-info">Cookies 政策</a></div>
+        <button class="btn btn-primary btn-sm ms-3"
+            onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 切换按钮状态
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    // 切换内容
+                    const target = btn.dataset.target;
+                    tabPanes.forEach(pane => {
+                        pane.classList.remove('active');
+                        if (pane.id === target) pane.classList.add('active');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
