@@ -1,7 +1,18 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootroot@db:3306/tvb_charity_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class Video(db.Model):
+    __tablename__ = 'videos'
+    video_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
 
 @app.route('/')
 def index():
@@ -63,7 +74,10 @@ def login_page():
 
 @app.route('/charity')
 def charity():
-    # A區：首屏焦點區 (1-3項)
+    # 這裡從資料庫抓取影片，但我先把它存進 db_activities 變數，避免覆蓋你下面寫死的資料
+    db_activities = Video.query.all() 
+    
+    # A區：首屏焦點區
     hero_data = {
         "main": {
             "title": "無綫電視暨職藝員愛心基金", 
@@ -83,7 +97,7 @@ def charity():
         }
     }
 
-    # B區：活動消息 (4-9項)
+    # B區：活動消息 (寫死備用)
     activities = [
         {
             "title": "無綫電視暨職藝員愛心基金「愛心送暖2026」", 
@@ -123,7 +137,7 @@ def charity():
         }
     ]
 
-    # C區：資料中心 (對應最下面兩個)
+    # C區：資料中心
     data_center = [
         {
             "title": "援助詳情", 
@@ -139,7 +153,9 @@ def charity():
         }
     ]
 
-    return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center)
+    # --- 修正 2：把唯一的 return 放在最下面，一次性把所有資料傳給前端 ---
+    # 這裡我同時傳入了 `activities` (你寫死的清單) 以及 `db_activities` (從資料庫抓的清單)
+    return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center, db_activities=db_activities)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
