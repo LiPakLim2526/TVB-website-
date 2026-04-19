@@ -61,7 +61,85 @@ def news():
 def login_page(): 
     return render_template('login.html')
 
+@app.route('/charity')
+def charity():
+    # A區：首屏焦點區 (1-3項)
+    hero_data = {
+        "main": {
+            "title": "無綫電視暨職藝員愛心基金", 
+            "date": "2026-03-12 16:00", 
+            "img": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80",
+            "url": "https://www.tvb.com/1004280"
+        },
+        "sub1": {
+            "title": "援助詳情", 
+            "img": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1004283"
+        },
+        "sub2": {
+            "title": "「善款移交暨委任愛心大使」活動", 
+            "img": "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1006051"
+        }
+    }
 
+    # B區：活動消息 (4-9項)
+    activities = [
+        {
+            "title": "無綫電視暨職藝員愛心基金「愛心送暖2026」", 
+            "date": "2026-02-05 17:10", 
+            "img": "https://images.unsplash.com/photo-1518398046578-8cca57782e17?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1011722"
+        },
+        {
+            "title": "愛心不止步 TVB愛心基金與社會各界為宏福苑受影響居民持續募款", 
+            "date": "2025-12-04 18:44", 
+            "img": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1010512"
+        },
+        {
+            "title": "TVB 電視廣播城內兩間員工餐廳12月1日全日收益不扣除成本 全數捐助「宏福苑｣ 受影響居民", 
+            "date": "2025-12-01 17:54", 
+            "img": "https://images.unsplash.com/photo-1608555855762-2b657eb1c348?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1010414"
+        },
+        {
+            "title": "「無綫電視暨職藝員愛心基金」捐出港幣100萬元予「大埔宏福苑援助基金」", 
+            "date": "2025-11-28 16:20", 
+            "img": "https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=500",
+            "url": "https://www.tvb.com/1010380"
+        },
+        {
+            "title": "TVB x 少年警訊慈善開年籃球友誼賽2025圓滿舉行", 
+            "date": "2025-03-05 11:01", 
+            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1005413"
+        },
+        {
+            "title": "TVB 賽馬日2025", 
+            "date": "2025-02-20 12:43", 
+            "img": "https://images.pexels.com/photos/1915340/pexels-photo-1915340.jpeg?auto=compress&cs=tinysrgb&w=500",
+            "url": "https://www.tvb.com/1005282"
+        }
+    ]
+
+    # C區：資料中心 (對應最下面兩個)
+    data_center = [
+        {
+            "title": "援助詳情", 
+            "date": "2026-12-12 16:30", 
+            "img": "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1004283"
+        },
+        {
+            "title": "無綫電視暨職藝員愛心基金", 
+            "date": "2026-12-12 16:30", 
+            "img": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=500&q=80",
+            "url": "https://www.tvb.com/1004280"
+        }
+    ]
+
+    return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
