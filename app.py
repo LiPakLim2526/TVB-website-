@@ -74,87 +74,86 @@ def login_page():
 
 @app.route('/charity')
 def charity():
-    # 這裡從資料庫抓取影片，但我先把它存進 db_activities 變數，避免覆蓋你下面寫死的資料
+    
     db_activities = Video.query.all() 
     
-    # A區：首屏焦點區
+    
     hero_data = {
         "main": {
             "title": "無綫電視暨職藝員愛心基金", 
             "date": "2026-03-12 16:00", 
-            "img": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80",
+            "img": "https://www.tvb.com/thumbor/gakocLO0px_yZTGdilaKVYhlK00=/1600x900/filters:quality(80)/public/tvbcom/article/images/202507/d279ec00-899b-4b58-b916-786b152cb58a.jpg",
             "url": "https://www.tvb.com/1004280"
         },
         "sub1": {
             "title": "援助詳情", 
-            "img": "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/iGtzSJmUzxBkRX8vAavBP99fUnQ=/1600x900/filters:quality(80)/public/tvbcom/article/images/202412/e0fcc4c3-9684-4702-88a3-a90155305175.jpg",
             "url": "https://www.tvb.com/1004283"
         },
         "sub2": {
             "title": "「善款移交暨委任愛心大使」活動", 
-            "img": "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/DsjFz2VepzXCDv7e341YyCdDgeo=/1600x900/filters:water(21):quality(80)/public/tvbcom/article/images/202504/14991061-c824-426d-aaf7-bf289e64d843.jpg",
             "url": "https://www.tvb.com/1006051"
         }
     }
 
-    # B區：活動消息 (寫死備用)
+    
     activities = [
         {
             "title": "無綫電視暨職藝員愛心基金「愛心送暖2026」", 
             "date": "2026-02-05 17:10", 
-            "img": "https://images.unsplash.com/photo-1518398046578-8cca57782e17?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/n1fyaEaigTXQJelqQkdvNowygEk=/1600x900/filters:water(21):quality(80)/public/tvbcom/article/images/202602/9042946f-d344-43bf-918d-ed0884ef3948.jpg",
             "url": "https://www.tvb.com/1011722"
         },
         {
             "title": "愛心不止步 TVB愛心基金與社會各界為宏福苑受影響居民持續募款", 
             "date": "2025-12-04 18:44", 
-            "img": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/D_UX7NIIE2YRu260a_X6e3fHE8w=/1600x900/filters:quality(80)/public/tvbcom/article/images/202512/dc390a0d-fcac-4d99-ac24-c378131dbfcc.jpg",
             "url": "https://www.tvb.com/1010512"
         },
         {
             "title": "TVB 電視廣播城內兩間員工餐廳12月1日全日收益不扣除成本 全數捐助「宏福苑｣ 受影響居民", 
             "date": "2025-12-01 17:54", 
-            "img": "https://images.unsplash.com/photo-1608555855762-2b657eb1c348?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/5bhD8OHHcyk_KmNBjsH0K0to7Uc=/1600x900/filters:quality(80)/public/tvbcom/article/images/202512/08994a6c-a138-4375-a972-e9cba63ad633.jpg",
             "url": "https://www.tvb.com/1010414"
         },
         {
             "title": "「無綫電視暨職藝員愛心基金」捐出港幣100萬元予「大埔宏福苑援助基金」", 
             "date": "2025-11-28 16:20", 
-            "img": "https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=500",
+            "img": "https://www.tvb.com/thumbor/fHxHZg_K_B0pVaO36CDVLGgqFk4=/1600x900/filters:quality(80)/public/tvbcom/article/images/202511/46960c5d-5982-4075-b4bf-bafd97080794.jpg",
             "url": "https://www.tvb.com/1010380"
         },
         {
             "title": "TVB x 少年警訊慈善開年籃球友誼賽2025圓滿舉行", 
             "date": "2025-03-05 11:01", 
-            "img": "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/6nrqyNLZJkBWHXA16-GyKuATgxc=/1600x900/filters:quality(80)/public/tvbcom/article/images/202503/1e7e11be-0007-4b59-94fd-d9d4f9d829f4.jpg",
             "url": "https://www.tvb.com/1005413"
         },
         {
             "title": "TVB 賽馬日2025", 
             "date": "2025-02-20 12:43", 
-            "img": "https://images.pexels.com/photos/1915340/pexels-photo-1915340.jpeg?auto=compress&cs=tinysrgb&w=500",
+            "img": "https://www.tvb.com/thumbor/RpAur2i9w4a6lW1Kc7YCG6Q1Jmw=/1600x900/filters:quality(80)/public/tvbcom/article/images/202502/933c886f-add8-4fa8-8ec9-99c45f5b1250.jpg",
             "url": "https://www.tvb.com/1005282"
         }
     ]
 
-    # C區：資料中心
+    
     data_center = [
         {
             "title": "援助詳情", 
             "date": "2026-12-12 16:30", 
-            "img": "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/iGtzSJmUzxBkRX8vAavBP99fUnQ=/1600x900/filters:quality(80)/public/tvbcom/article/images/202412/e0fcc4c3-9684-4702-88a3-a90155305175.jpg",
             "url": "https://www.tvb.com/1004283"
         },
         {
             "title": "無綫電視暨職藝員愛心基金", 
             "date": "2026-12-12 16:30", 
-            "img": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=500&q=80",
+            "img": "https://www.tvb.com/thumbor/gakocLO0px_yZTGdilaKVYhlK00=/1600x900/filters:quality(80)/public/tvbcom/article/images/202507/d279ec00-899b-4b58-b916-786b152cb58a.jpg",
             "url": "https://www.tvb.com/1004280"
         }
     ]
 
-    # --- 修正 2：把唯一的 return 放在最下面，一次性把所有資料傳給前端 ---
-    # 這裡我同時傳入了 `activities` (你寫死的清單) 以及 `db_activities` (從資料庫抓的清單)
+    
     return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center, db_activities=db_activities)
 
 if __name__ == '__main__':

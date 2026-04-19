@@ -1,8 +1,8 @@
--- 1. 選擇資料庫
+
 CREATE DATABASE IF NOT EXISTS tvb_charity_db;
 USE tvb_charity_db;
 
--- 2. 建立所有資料表 (如果不存在的話)
+
 CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS banners (
     display_order INT
 );
 
--- 3. 注入高品質測試數據
+
 INSERT IGNORE INTO categories (name, slug, description) VALUES 
 ('愛心行動', 'charity-action', 'TVB 職藝員愛心基金的最新動態與慈善活動'),
 ('個案援助', 'case-support', '社會各界弱勢群體的個案援助與募款進度'),
