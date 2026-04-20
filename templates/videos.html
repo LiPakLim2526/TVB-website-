@@ -17,6 +17,8 @@
         body {
             background-color: #ffffff;
             color: #333;
+            padding-bottom: 120px;
+            /* 避免被 cookie 條擋住 */
         }
 
         .navbar {
@@ -64,6 +66,11 @@
             padding: 15px 0;
             border-bottom: 1px solid #eee;
             margin-bottom: 25px;
+            position: sticky;
+            top: 60px;
+            /* 这个值要和你导航栏的高度一致 */
+            background-color: #fff;
+            z-index: 999;
         }
 
         .tab-btn {
@@ -80,7 +87,14 @@
             border-bottom: 2px solid #0066cc;
         }
 
-        /* 视频卡片 & 动画效果 */
+        /* 🔥 最重要：讓所有卡片永遠顯示 */
+        .tab-pane {
+            display: block !important;
+            margin-bottom: 60px;
+            padding-top: 20px;
+        }
+
+        /* 影片卡片 */
         .video-card {
             margin-bottom: 24px;
         }
@@ -101,12 +115,10 @@
             transition: transform 0.3s ease;
         }
 
-        /* 悬浮：图片放大 不上移 */
         .card-thumb:hover img {
             transform: scale(1.08);
         }
 
-        /* 播放按钮 */
         .play-btn {
             position: absolute;
             top: 50%;
@@ -124,12 +136,10 @@
             transition: 0.3s;
         }
 
-        /* 悬浮 → 播放按钮变黑 */
         .card-thumb:hover .play-btn {
             background: #000;
         }
 
-        /* 文字 */
         .card-info h3 {
             font-size: 16px;
             margin: 10px 0 4px;
@@ -147,7 +157,7 @@
             color: #999;
         }
 
-        /* 广告样式 */
+        /* 廣告 */
         .ad-banner {
             position: relative;
             border-radius: 14px;
@@ -234,6 +244,7 @@
             color: #333;
         }
 
+        /* 頁尾 */
         .footer-rainbow-bar {
             height: 4px;
             width: 100%;
@@ -344,19 +355,6 @@
             align-items: center;
         }
 
-        /* 标签切换核心样式 */
-        .tab-pane {
-            display: none;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        .tabs {
-            margin-bottom: 1rem;
-        }
-
         .tab-btn {
             padding: 8px 20px;
             margin-right: 8px;
@@ -372,7 +370,6 @@
             border-color: #000;
         }
 
-        /* 广告标签样式 */
         .ad-label {
             position: absolute;
             top: 8px;
@@ -387,11 +384,6 @@
         .ad-card {
             position: relative;
             display: block;
-        }
-
-        .ad-banner img {
-            width: 100%;
-            border-radius: 12px;
         }
     </style>
 </head>
@@ -408,7 +400,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="/">首頁</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/funnyhot">娛樂焦點</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/news">娛樂焦點</a></li>
                     <li class="nav-item"><a class="nav-link" href="/videos">節目重溫</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">健康生活</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">愛心基金</a></li>
@@ -423,501 +415,484 @@
                 </div>
             </div>
         </div>
+
     </nav>
-
- <div class="container my-4">
-    <!-- 标签按钮 -->
-    <div class="tabs">
-        <button class="tab-btn" data-target="drama">劇集重溫</button>
-        <button class="tab-btn active" data-target="variety">綜藝精華</button>
-        <button class="tab-btn" data-target="topic">專題系列</button>
-    </div>
-
-    <!-- 顶部 VTC 广告（永久显示） -->
-    <div class="my-4">
-        <div class="ad-banner">
-            <a href="https://www.vtc.edu.hk/tc/home.html" style="text-decoration: none;" target="_blank">
-                <img src="{{ url_for('static', filename='img/AD2.png') }}" alt="廣告"
-                    style="width: 100%; height: 180px; object-fit: contain; background: #fff; border-radius: 12px; display: block;">
-                <span class="ad-label">AD</span>
-            </a>
+    <div class="container my-4">
+        <!-- 标签按钮 -->
+        <div class="tabs">
+            <button class="tab-btn" data-target="drama">劇集重溫</button>
+            <button class="tab-btn active" data-target="variety">綜藝精華</button>
+            <button class="tab-btn" data-target="topic">專題系列</button>
         </div>
-    </div>
 
-    <!-- 标签内容容器（核心修复） -->
-    <div class="tab-content">
-        <!-- ====================== -->
-        <!-- 1. 劇集重溫 8个卡片 -->
-        <!-- ====================== -->
-        <div class="tab-pane" id="drama">
-            <h1 class="mb-4">劇集重溫</h1>
-            <div class="row g-4">
-                <!-- 卡片1 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 9小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 卡片2 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- PS广告卡片 -->
-                <div class="col-md-4">
-                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
-                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
-                        <span class="ad-label">AD</span>
-                    </a>
-                </div>
-                <!-- 卡片4 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 卡片5 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 卡片6 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 卡片7 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 卡片8 -->
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="巾帼枭雄之义海豪情">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>巾帼枭雄之义海豪情</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">劇集重溫 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- 底部横幅广告 -->
-            <div class="ad-banner my-4">
-                <a href="https://store.playstation.com" target="_blank">
-                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+        <!-- 顶部 VTC 广告（永久显示） -->
+        <div class="my-4">
+            <div class="ad-banner">
+                <a href="https://www.vtc.edu.hk/tc/home.html" style="text-decoration: none;" target="_blank">
+                    <img src="{{ url_for('static', filename='img/AD2.png') }}" alt="廣告"
+                        style="width: 100%; height: 180px; object-fit: contain; background: #fff; border-radius: 12px; display: block;">
                     <span class="ad-label">AD</span>
                 </a>
             </div>
         </div>
 
-        <!-- ====================== -->
-        <!-- 2. 綜藝精華 8个卡片 -->
-        <!-- ====================== -->
-        <div class="tab-pane active" id="variety">
-            <h1 class="mb-4">綜藝精華</h1>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
+        <!-- 标签内容容器（核心修复） -->
+        <div class="tab-content">
+            <!-- ====================== -->
+            <!-- 1. 劇集重溫 8个卡片 -->
+            <!-- ====================== -->
+            <div class="tab-pane" id="drama">
+                <h1 class="mb-4">劇集重溫</h1>
+                <div class="row g-4">
+                    <!-- 卡片1 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E4%BA%94%E9%9B%86%E5%8A%87%E6%83%85%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E4%BD%98%E8%A9%A9%E6%9B%BC%E9%81%AD%E5%88%80%E6%89%8B%E4%BC%8F%E6%93%8A%E6%96%AC%E6%89%8B-%E8%88%87%E8%AD%9A%E8%80%80%E6%96%87%E6%83%A1%E9%AC%A5%E7%8A%AF%E7%BD%AA%E9%9B%86%E5%9C%98-v1000288"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/15.1.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十五集劇情線上看</h3>
+                                <p>佘詩曼遭刀手伏擊斬手 與譚耀文惡鬥犯罪集團</p>
+                                <span class="time">劇集重溫 9小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片2 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E4%BA%94%E9%9B%86%E7%B2%BE%E8%8F%AF%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E6%9D%8E%E6%88%90%E6%98%8C%E6%96%BD%E5%A3%93%E6%92%A4%E6%8F%9B%E6%B3%95%E5%AE%98-%E8%A8%B1%E7%B4%B9%E9%9B%84%E5%8A%9B%E6%92%90%E4%B8%8B%E5%B1%AC%E4%BD%98%E8%A9%A9%E6%9B%BC-v1000287"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/15.2.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十五集精華線上看</h3>
+                                <p>李成昌施壓撤換法官 許紹雄力撐下屬佘詩曼</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PS广告卡片 -->
+                    <div class="col-md-4">
+                        <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
+                            <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                            <span class="ad-label">AD</span>
                         </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 9小時前</span>
+                    </div>
+                    <!-- 卡片4 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E5%9B%9B%E9%9B%86%E5%8A%87%E6%83%85%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E4%BD%98%E8%A9%A9%E6%9B%BC%E7%9D%87%E7%A9%BF%E9%83%B5%E5%8C%85%E6%A1%88%E8%97%8F%E5%A4%A7%E9%99%B0%E8%AC%80-%E7%8A%AF%E4%BA%BA%E8%87%AA%E7%99%BD%E4%BC%BC%E8%AE%80%E7%A8%BF%E6%A9%9F%E5%99%A8-v1000286"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/14.1.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十四集劇情線上看</h3>
+                                <p>佘詩曼睇穿郵包案藏大陰謀 犯人自白似讀稿機器</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片5 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E5%9B%9B%E9%9B%86%E7%B2%BE%E8%8F%AF%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E4%BD%98%E8%A9%A9%E6%9B%BC%E5%8A%A9%E8%A8%B1%E7%B4%B9%E9%9B%84%E7%88%B6%E5%AD%90%E8%A7%A3%E9%96%8B%E5%BF%83%E7%B5%90-%E6%9E%97%E4%BF%8A%E5%85%B6%E8%87%AA%E9%A6%96%E6%8F%AD%E7%8A%AF%E7%BD%AA%E8%83%8C%E5%BE%8C%E8%8B%A6%E8%A1%B7-v1000285"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/14.2.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十四集精華線上看</h3>
+                                <p>佘詩曼助許紹雄父子解開心結 林俊其自首揭犯罪背後苦衷</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片6 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E4%B8%89%E9%9B%86%E5%8A%87%E6%83%85%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E4%B8%98%E6%A2%93%E8%AC%99%E8%BB%8A%E5%B0%BE%E7%AE%B1%E8%97%8F%E7%99%BE%E8%90%AC%E7%8F%BE%E9%87%91%E6%B6%89%E7%9B%9C%E7%AB%8A-%E8%A8%B1%E7%B4%B9%E9%9B%84%E6%B1%82%E4%BD%98%E8%A9%A9%E6%9B%BC%E5%9A%B4%E6%87%B2%E5%85%92%E5%AD%90-v1000283"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/13.1.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十三集劇情線上看</h3>
+                                <p>丘梓謙車尾箱藏百萬現金涉盜竊 許紹雄求佘詩曼嚴懲兒子</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片7 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E4%B8%89%E9%9B%86%E7%B2%BE%E8%8F%AF%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E8%A8%B1%E7%B4%B9%E9%9B%84%E5%A0%85%E4%BF%A1%E5%85%92%E5%AD%90%E4%B8%98%E6%A2%93%E8%AC%99%E6%9C%89%E4%BB%BD%E7%8A%AF%E6%A1%88-%E6%BA%90%E6%96%BC%E6%B3%95%E5%AE%98%E7%9A%84%E5%81%8F%E5%9F%B7--v1000282"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/13.2.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十三集精華線上看</h3>
+                                <p>正義女神第十三集精華線上看｜許紹雄堅信兒子丘梓謙有份犯案 源於法官的偏執？</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 卡片8 -->
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%A3%E7%BE%A9%E5%A5%B3%E7%A5%9E%E7%AC%AC%E5%8D%81%E4%BA%8C%E9%9B%86%E5%8A%87%E6%83%85%E7%B7%9A%E4%B8%8A%E7%9C%8B-%E4%BD%98%E8%A9%A9%E6%9B%BC%E6%8F%AD%E6%A2%81%E8%B6%85%E6%80%A1%E8%A2%AB%E6%8E%A8%E8%90%BD%E9%9B%BB%E6%A2%AF%E7%9C%9F%E7%9B%B8-%E5%A5%B3%E5%AD%B8%E7%94%9F%E5%81%9APTGF%E9%99%AA%E5%8F%94%E5%8F%94%E6%8B%8D%E4%B8%80%E6%97%A5%E6%8B%96-v1000280"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/12.1.webp') }}" alt="正義女神">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>正義女神第十二集劇情線上看</h3>
+                                <p>佘詩曼揭梁超怡被推落電梯真相 女學生做PTGF陪叔叔拍一日拖</p>
+                                <span class="time">劇集重溫 19小時前</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
-                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+
+                <!-- 底部横幅广告 -->
+                <div class="ad-banner my-4">
+                    <a href="https://github.com" style="text-decoration: none;" target="_blank">
+                        <img src="{{ url_for('static', filename='img/gh.png') }}" 
+                        style="width: 100%; height: 180px; object-fit: contain; background: #fff; border-radius: 12px; display: block;" 
+                        alt="Github廣告">
                         <span class="ad-label">AD</span>
                     </a>
                 </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
+            </div>
+
+            <!-- ====================== -->
+            <!-- 2. 綜藝精華 9个卡片 -->
+            <!-- ====================== -->
+            <div class="tab-pane active" id="variety">
+                <h1 class="mb-4">綜藝精華</h1>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%A9%A6%E7%9C%9FD-%E6%B7%B1%E5%9C%B3%E5%85%89%E6%98%8E%E4%B9%B3%E9%B4%BF%E5%A4%A7%E6%AF%94%E6%8B%BC--%E5%91%A8%E5%98%89%E6%B4%9B%E6%9C%B1%E6%95%8F%E7%80%9AVS%E6%9C%89%E6%85%8B%E5%BA%A6%E8%80%81%E9%97%86%E5%A8%98-v1000289"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/trd5.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>試真D</h3>
+                                <p>深圳光明乳鴿大比拼 周嘉洛朱敏瀚VS有態度老闆娘</p>
+                                <span class="time">綜藝精華 9小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%A9%A6%E7%9C%9FD-%E9%9C%89%E9%9C%89%E9%BB%91%E9%BB%91%E6%A4%92%E9%B9%BD%E7%80%A8%E5%B0%BF%E8%9D%A6-%E5%9A%87%E5%88%B0%E6%B1%9F%E7%BE%8E%E5%84%80%E5%9F%8B%E5%96%AE%E9%80%9F%E9%80%83-v1000284"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/trd4.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>試真D</h3>
+                                <p>霉霉黑黑椒鹽瀨尿蝦 嚇到江美儀埋單速逃</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
+
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%A9%A6%E7%9C%9FD-%E5%92%96%E5%95%A1%E5%8A%A0%E8%85%B8%E7%B2%89%E6%84%8F%E6%83%B3%E4%B8%8D%E5%88%B0%E7%9A%84%E9%A9%9A%E5%96%9C-%E5%9D%A4%E5%93%A5%E4%B8%80%E4%BA%BA%E9%96%8B%E5%BF%83%E9%A3%9F%E5%85%A9%E9%9A%BB%E5%A4%A7%E9%B5%9D%E9%AB%80-v1000281"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/trd3.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>試真D</h3>
+                                <p>咖啡加腸粉意想不到的驚喜 坤哥一人開心食兩隻大鵝髀</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
+
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%A9%A6%E7%9C%9FD-%E5%94%90%E6%9C%9D%E4%B8%BB%E9%A1%8C%E9%A4%90%E5%BB%B3%E7%BE%8E%E5%84%80%E5%A7%90%E5%BF%8D%E5%94%94%E4%BD%8F%E6%8E%A7%E8%A8%B4-%E5%90%B3%E6%A5%AD%E5%9D%A4%E5%91%A8%E5%98%89%E6%B4%9B%E5%8D%B3%E8%88%88%E4%BA%82%E5%85%A5%E8%A1%A8%E6%BC%94-v1000278"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/trd2.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>試真D</h3>
+                                <p>唐朝主題餐廳美儀姐忍唔住控訴 吳業坤周嘉洛即興亂入表演</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="综艺视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>综艺热门片段</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">綜藝精華 19小時前</span>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%A9%A6%E7%9C%9FD-%E4%BB%A4%E5%9D%A4%E5%93%A5%E5%8F%8D%E7%99%BD%E7%9C%BC%E7%9A%84%E6%B5%B7%E9%AE%AE%E8%96%88-%E8%B6%85%E7%BE%8E%E5%91%B3%E7%B4%A0%E9%A3%9F%E5%AE%B4%E4%BB%A4%E5%91%A8%E5%98%89%E6%B4%9B%E6%AD%AA%E5%9F%8B%E4%B8%80%E9%82%8A-v1000277"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/trd1.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>試真D</h3>
+                                <p>令坤哥反白眼的海鮮薈 超美味素食宴令周嘉洛歪埋一邊</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%BD%9F%E7%82%B8%E5%91%B3%E8%95%BE%E7%9A%84%E5%BB%9A%E6%88%BF-%E6%B8%AF%E7%89%88%E9%9B%B2%E5%8D%97%E9%87%8E%E6%9E%9C%E7%81%AB%E9%8D%8B-%E5%85%A8%E9%AD%9A%E5%AE%B4%E7%95%AA%E8%8C%84%E8%B1%86%E8%85%90%E7%B4%85%E8%A1%AB%E9%AD%9A%E6%B9%AF-v1000274"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/cer10.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>轟炸味蕾的廚房</h3>
+                                <p>港版雲南野果火鍋 全魚宴番茄豆腐紅衫魚湯</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%BD%9F%E7%82%B8%E5%91%B3%E8%95%BE%E7%9A%84%E5%BB%9A%E6%88%BF-%E9%A6%99%E8%BE%A3%E6%83%B9%E5%91%B3%E5%8F%A3%E6%B0%B4%E9%B4%9B%E9%B4%A6%E9%9B%9E%E5%8D%B7-%E9%9D%9E%E9%81%BA%E9%A3%9F%E6%9D%90%E7%85%AE%E8%8A%A5%E8%98%AD-v1000268"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/cer9.webp') }}" alt="综艺视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>轟炸味蕾的廚房</h3>
+                                <p>香辣惹味口水鴛鴦雞卷 非遺食材煮芥蘭</p>
+                                <span class="time">綜藝精華 19小時前</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%BD%9F%E7%82%B8%E5%91%B3%E8%95%BE%E7%9A%84%E5%BB%9A%E6%88%BF-%E5%85%AC%E9%96%8B%E9%81%BF%E9%A2%A8%E5%A1%98%E9%A2%A8%E5%91%B3%E7%9A%84%E9%97%9C%E9%8D%B5-%E5%9C%A8%E5%AE%B6%E8%87%AA%E8%A3%BD%E8%9D%A6%E9%86%AC%E7%84%A1%E9%9B%A3%E5%BA%A6---v1000265"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/cer8.webp') }}" alt="专题视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>轟炸味蕾的廚房</h3>
+                                <p>公開避風塘風味的關鍵 在家自製蝦醬無難度？！</p>
+                                <span class="time">專題系列 19小時前</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="ad-banner my-4">
-                <a href="https://store.playstation.com" target="_blank">
-                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
-                    <span class="ad-label">AD</span>
-                </a>
-            </div>
-        </div>
 
-        <!-- ====================== -->
-        <!-- 3. 專題系列 8个卡片 -->
-        <!-- ====================== -->
-        <div class="tab-pane" id="topic">
-            <h1 class="mb-4">專題系列</h1>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 9小時前</span>
+
+            <!-- ====================== -->
+            <!-- 3. 專題系列 5个卡片 -->
+            <!-- ====================== -->
+            <div class="tab-pane" id="topic">
+                <h1 class="mb-4">專題系列</h1>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%A8%8A%E4%BA%A6%E6%95%8F%E9%A6%96%E5%BA%A6%E6%9B%9D%E5%85%89-%E6%84%9B-%E5%9B%9E%E5%AE%B6-%E5%BB%A0%E6%99%AF-%E8%A6%AA%E6%8F%AD%E6%99%82%E8%82%A5%E6%99%82%E7%98%A6%E4%B9%8B%E8%AC%8E-%E5%B0%8D%E5%A9%9A%E5%A7%BB%E6%81%90%E6%87%BC%E6%9B%BE%E7%99%BC%E5%99%A9%E5%A4%A2%E5%9A%87%E9%86%92-%E9%9B%BB%E8%A6%96%E5%9F%8E%E5%85%A7-v1000271"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/love back home.webp') }}" alt="专题视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>樊亦敏首度曝光《愛．回家》廠景 親揭時肥時瘦之謎 對婚姻恐懼曾發噩夢嚇醒｜電視城內</h3>
+                                <p>電視城內</p>
+                                <span class="time">專題系列 9小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E9%99%B3%E8%B1%AA%E5%BE%9E%E9%87%91%E6%AF%9B%E5%8F%A4%E6%83%91%E4%BB%94%E5%88%B02%E5%B1%86%E8%A6%96%E5%B8%9D--%E6%B4%9B%E7%A5%9E-%E6%84%8F%E5%A4%96%E8%A2%AB%E7%99%BC%E6%8E%98%E5%96%9C%E5%8A%87%E5%A4%A9%E5%88%86-%E7%AC%91%E5%9B%9E%E5%A4%A9%E5%83%B93-000%E8%90%AC%E5%B9%B4%E8%96%AA%E5%82%B3%E8%81%9E-%E9%9B%BB%E8%A6%96%E5%9F%8E%E5%85%A7-v1000249"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/lo god.webp') }}" alt="专题视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>陳豪從金毛古惑仔到2屆視帝《洛神》意外被發掘喜劇天分 笑回天價3,000萬年薪傳聞</h3>
+                                <p>電視城內</p>
+                                <span class="time">專題系列 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://store.playstation.com" class="card-thumb ad-card" target="_blank">
-                        <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
-                        <span class="ad-label">AD</span>
                     </a>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E6%AD%90%E7%91%9E%E5%81%89%E9%80%BE40%E5%B9%B4%E9%9B%BB%E8%A6%96%E7%94%9F%E6%B6%AF-%E5%81%9A%E6%AD%A6%E5%B8%AB%E6%BA%BA%E6%B0%B41%E5%88%86%E9%90%98%E9%9A%AA%E6%AD%BB-%E5%B0%8F%E6%99%82%E5%80%99%E7%95%AB%E9%9D%A2%E4%B8%80%E5%B9%95%E4%B8%80%E5%B9%95%E5%87%BA%E7%8F%BE-%E9%9B%BB%E8%A6%96%E5%9F%8E%E5%85%A7-TVB--v1000239"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/ao s w.webp') }}" alt="专题视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>歐瑞偉逾40年電視生涯 做武師溺水1分鐘險死 小時候畫面一幕一幕出現 電視城內</h3>
+                                <p>TVB</p>
+                                <span class="time">專題系列 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
+                    <div class="col-md-4">
+                        <div class="video-card">
+                            <a href="https://www.tvb.com/proghighlights-v/%E8%83%A1%E6%A5%93%E7%B4%B0%E8%A8%B4%E7%94%B1%E9%9B%BB%E5%BD%B1%E7%94%B7%E4%B8%80%E5%81%9A%E5%88%B0%E9%9B%BB%E8%A6%96%E7%94%B7%E9%85%8D-%E6%9B%BE%E9%99%B7%E8%87%AA%E6%88%91%E6%87%B7%E7%96%91-%E7%8D%B2%E5%A4%AA%E5%A4%AA%E4%B8%80%E5%8F%A5-%E7%84%A1%E6%89%80%E8%AC%82-%E9%BB%9E%E9%86%92-%E5%94%94%E8%A6%BA%E5%BE%97%E9%81%BA%E6%86%BE--%E9%9B%BB%E8%A6%96%E5%9F%8E%E5%85%A7-v1000219s"
+                                class="card-thumb" target="_blank">
+                                <img src="{{ url_for('static', filename='img/dssn.webp') }}" alt="专题视频">
+                                <div class="play-btn">▶</div>
+                            </a>
+                            <div class="card-info">
+                                <h3>胡楓細訴由電影男一做到電視男配 曾陷自我懷疑 獲太太一句「無所謂」點醒：唔覺得遺憾！</h3>
+                                <p>電視城內</p>
+                                <span class="time">專題系列 19小時前</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="video-card">
-                        <a href="https://youtu.be/78gK3wGAVgs" class="card-thumb" target="_blank">
-                            <img src="{{ url_for('static', filename='img/v1.jpg') }}" alt="专题视频">
-                            <div class="play-btn">▶</div>
-                        </a>
-                        <div class="card-info">
-                            <h3>专题系列视频</h3>
-                            <p>非凡桌面清理大師</p>
-                            <span class="time">專題系列 19小時前</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="ad-banner my-4">
-                <a href="https://store.playstation.com" target="_blank">
-                    <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
-                    <span class="ad-label">AD</span>
-                </a>
+                    <div class="ad-banner my-4">
+                        <a href="https://store.playstation.com" target="_blank">
+                            <img src="{{ url_for('static', filename='img/peakpx.jpg') }}" alt="PS廣告">
+                            <span class="ad-label">AD</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
 
-    <!-- 底部 -->
-    <div class="footer-rainbow-bar">
-        <div class="rainbow-blue"></div>
-        <div class="rainbow-green"></div>
-        <div class="rainbow-red"></div>
-    </div>
+        <!-- 底部 -->
+        <div class="footer-rainbow-bar">
+            <div class="rainbow-blue"></div>
+            <div class="rainbow-green"></div>
+            <div class="rainbow-red"></div>
+        </div>
 
-    <footer class="footer-main">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2 footer-column">
-                    <h6>本集團成員</h6>
-                    <a href="#" class="footer-link">鄰住買</a>
-                    <a href="#" class="footer-link">無綫新聞</a>
-                    <a href="#" class="footer-link">myTV SUPER</a>
-                    <a href="#" class="footer-link">TVB Anywhere</a>
-                    <a href="#" class="footer-link">TVB Music Group</a>
-                    <a href="#" class="footer-link">愛心基金</a>
-                </div>
-                <div class="col-md-2 footer-column">
-                    <h6>關於TVB</h6>
-                    <a href="#" class="footer-link">公司業務</a>
-                    <a href="#" class="footer-link">董事局成員</a>
-                    <a href="#" class="footer-link">行政人員</a>
-                    <a href="#" class="footer-link">年度報表</a>
-                    <a href="#" class="footer-link">業績公佈</a>
-                </div>
-                <div class="col-md-2 footer-column">
-                    <h6>TVB藝人</h6>
-                    <a href="#" class="footer-link">男藝員</a>
-                    <a href="#" class="footer-link">女藝員</a>
-                    <a href="#" class="footer-link">主持</a>
-                    <a href="#" class="footer-link">歌手</a>
-                </div>
-                <div class="col-md-2 footer-column">
-                    <h6>TVB營業部</h6>
-                    <a href="#" class="footer-link">廣告查詢</a>
-                    <a href="#" class="footer-link">TVB Event Power</a>
-                    <a href="#" class="footer-link">廣告價目表</a>
-                </div>
-                <div class="col-md-2 footer-column">
-                    <h6>常見問題</h6>
-                    <a href="#" class="footer-link">FAQ</a>
-                    <a href="#" class="footer-link">TVB會員</a>
-                    <a href="#" class="footer-link">聯絡我們</a>
-                    <a href="#" class="footer-link">網上查詢</a>
-                </div>
-                <div class="col-md-2 footer-column">
-                    <h6>服務條款</h6>
-                    <a href="#" class="footer-link">本網站使用條款及條件</a>
-                    <a href="#" class="footer-link">私隱政策聲明</a>
-                    <a href="#" class="footer-link">個人資料收集聲明</a>
-                </div>
-            </div>
-
-            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
-                <div class="d-flex align-items-center flex-wrap">
-                    <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
-                        class="footer-logo me-4">
-                    <div class="app-icons d-flex">
-                        <img src="https://www.tvb.com/thumbor/JSbENAjHDFxb0_Fqyqn9XXEdvWg=/512x512/public/tvbcom/footer/images/202401/0bae42dc-e1f6-4264-becd-4a6338a529f6.png"
-                            title="無綫新聞">
-                        <img src="https://www.tvb.com/thumbor/7oIVcDP53Db9rJyrcxfn9BgMWg8=/512x512/public/tvbcom/footer/images/202401/9b6b6338-9c8d-4249-a101-473b44ca8fe4.png"
-                            title="myTV SUPER" style="height:25px; margin-top:4px;">
+        <footer class="footer-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 footer-column">
+                        <h6>本集團成員</h6>
+                        <a href="#" class="footer-link">鄰住買</a>
+                        <a href="#" class="footer-link">無綫新聞</a>
+                        <a href="#" class="footer-link">myTV SUPER</a>
+                        <a href="#" class="footer-link">TVB Anywhere</a>
+                        <a href="#" class="footer-link">TVB Music Group</a>
+                        <a href="#" class="footer-link">愛心基金</a>
+                    </div>
+                    <div class="col-md-2 footer-column">
+                        <h6>關於TVB</h6>
+                        <a href="#" class="footer-link">公司業務</a>
+                        <a href="#" class="footer-link">董事局成員</a>
+                        <a href="#" class="footer-link">行政人員</a>
+                        <a href="#" class="footer-link">年度報表</a>
+                        <a href="#" class="footer-link">業績公佈</a>
+                    </div>
+                    <div class="col-md-2 footer-column">
+                        <h6>TVB藝人</h6>
+                        <a href="#" class="footer-link">男藝員</a>
+                        <a href="#" class="footer-link">女藝員</a>
+                        <a href="#" class="footer-link">主持</a>
+                        <a href="#" class="footer-link">歌手</a>
+                    </div>
+                    <div class="col-md-2 footer-column">
+                        <h6>TVB營業部</h6>
+                        <a href="#" class="footer-link">廣告查詢</a>
+                        <a href="#" class="footer-link">TVB Event Power</a>
+                        <a href="#" class="footer-link">廣告價目表</a>
+                    </div>
+                    <div class="col-md-2 footer-column">
+                        <h6>常見問題</h6>
+                        <a href="#" class="footer-link">FAQ</a>
+                        <a href="#" class="footer-link">TVB會員</a>
+                        <a href="#" class="footer-link">聯絡我們</a>
+                        <a href="#" class="footer-link">網上查詢</a>
+                    </div>
+                    <div class="col-md-2 footer-column">
+                        <h6>服務條款</h6>
+                        <a href="#" class="footer-link">本網站使用條款及條件</a>
+                        <a href="#" class="footer-link">私隱政策聲明</a>
+                        <a href="#" class="footer-link">個人資料收集聲明</a>
                     </div>
                 </div>
 
-                <div class="social-icons">
-                    <a href="#" title="Facebook"><img
-                            src="https://www.tvb.com/thumbor/jHTkLs30f1i8YrWiDXFx-OwLqiU=/32x32/public/tvbcom/footer/images/202509/e7323e1f-70f0-4b52-9ad9-309e40dc16f5.svg"
-                            class="custom-icon"></a>
-                    <a href="#" title="Instagram"><img
-                            src="https://www.tvb.com/thumbor/kDgbPwaVNTm5I2u4LByFYB1ECCY=/32x32/public/tvbcom/footer/images/202509/73fcf01e-ef1e-4a03-81cf-f17bce4e57d3.svg"
-                            class="custom-icon"></a>
-                    <a href="#" title="YouTube"><img
-                            src="https://www.tvb.com/thumbor/vFhoHNw0mrtsPv2dx4oMOF2sTdo=/32x32/public/tvbcom/footer/images/202509/372c7afc-eb25-4f66-9811-ffd0909e14df.svg"
-                            class="custom-icon"></a>
-                    <a href="#" title="X"><img
-                            src="https://www.tvb.com/thumbor/DvUQmQGqjyRbe06iTF3A7ZKW6Ek=/32x32/public/tvbcom/footer/images/202509/574e870f-4296-4f5a-9f9b-f8a4aa1d7686.svg"
-                            class="custom-icon"></a>
-                    <a href="#" title="WeChat"><img
-                            src="https://www.tvb.com/thumbor/YYgwX7gPYGVGmhZVSt8wk6VDs-w=/32x32/public/tvbcom/footer/images/202509/6a87e9af-005f-4506-9a6b-97178babbd4e.svg"
-                            class="custom-icon"></a>
-                    <a href="#" title="TikTok"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
-                            class="custom-icon"></a>
+                <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
+                            class="footer-logo me-4">
+                        <div class="app-icons d-flex">
+                            <img src="https://www.tvb.com/thumbor/JSbENAjHDFxb0_Fqyqn9XXEdvWg=/512x512/public/tvbcom/footer/images/202401/0bae42dc-e1f6-4264-becd-4a6338a529f6.png"
+                                title="無綫新聞">
+                            <img src="https://www.tvb.com/thumbor/7oIVcDP53Db9rJyrcxfn9BgMWg8=/512x512/public/tvbcom/footer/images/202401/9b6b6338-9c8d-4249-a101-473b44ca8fe4.png"
+                                title="myTV SUPER" style="height:25px; margin-top:4px;">
+                        </div>
+                    </div>
+
+                    <div class="social-icons">
+                        <a href="#" title="Facebook"><img
+                                src="https://www.tvb.com/thumbor/jHTkLs30f1i8YrWiDXFx-OwLqiU=/32x32/public/tvbcom/footer/images/202509/e7323e1f-70f0-4b52-9ad9-309e40dc16f5.svg"
+                                class="custom-icon"></a>
+                        <a href="#" title="Instagram"><img
+                                src="https://www.tvb.com/thumbor/kDgbPwaVNTm5I2u4LByFYB1ECCY=/32x32/public/tvbcom/footer/images/202509/73fcf01e-ef1e-4a03-81cf-f17bce4e57d3.svg"
+                                class="custom-icon"></a>
+                        <a href="#" title="YouTube"><img
+                                src="https://www.tvb.com/thumbor/vFhoHNw0mrtsPv2dx4oMOF2sTdo=/32x32/public/tvbcom/footer/images/202509/372c7afc-eb25-4f66-9811-ffd0909e14df.svg"
+                                class="custom-icon"></a>
+                        <a href="#" title="X"><img
+                                src="https://www.tvb.com/thumbor/DvUQmQGqjyRbe06iTF3A7ZKW6Ek=/32x32/public/tvbcom/footer/images/202509/574e870f-4296-4f5a-9f9b-f8a4aa1d7686.svg"
+                                class="custom-icon"></a>
+                        <a href="#" title="WeChat"><img
+                                src="https://www.tvb.com/thumbor/YYgwX7gPYGVGmhZVSt8wk6VDs-w=/32x32/public/tvbcom/footer/images/202509/6a87e9af-005f-4506-9a6b-97178babbd4e.svg"
+                                class="custom-icon"></a>
+                        <a href="#" title="TikTok"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png"
+                                class="custom-icon"></a>
+                    </div>
+                </div>
+                <div class="copyright text-md-start">
+                    Copyright ©2026 Television Broadcasts Limited
                 </div>
             </div>
-            <div class="copyright text-md-start">
-                Copyright ©2026 Television Broadcasts Limited
-            </div>
+        </footer>
+
+        <div class="cookie-banner" id="cookieBox">
+            <div>🍪 本服務使用 Cookies 以維持可靠性 <a href="#" class="text-info">Cookies 政策</a></div>
+            <button class="btn btn-primary btn-sm ms-3"
+                onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
         </div>
-    </footer>
 
-    <div class="cookie-banner" id="cookieBox">
-        <div>🍪 本服務使用 Cookies 以維持可靠性 <a href="#" class="text-info">Cookies 政策</a></div>
-        <button class="btn btn-primary btn-sm ms-3"
-            onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
-    </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const tabBtns = document.querySelectorAll('.tab-btn');
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabPanes = document.querySelectorAll('.tab-pane');
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const targetId = btn.dataset.target;
+                        const targetElement = document.getElementById(targetId);
 
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // 切换按钮状态
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    // 切换内容
-                    const target = btn.dataset.target;
-                    tabPanes.forEach(pane => {
-                        pane.classList.remove('active');
-                        if (pane.id === target) pane.classList.add('active');
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
                     });
                 });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>

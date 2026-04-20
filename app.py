@@ -56,9 +56,14 @@ def news():
     ]
     return render_template('news.html', artist_news=artist_news, artist_news_data=artist_news_data, funny_data=funny_data, hot_data=hot_data)
 
+@app.route('/videos')
+def videos():
+    return render_template('videos.html')
+
+
 
 @app.route('/login')
-def login_page(): 
+def login(): 
     return render_template('login.html')
 
 
