@@ -1,0 +1,26 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+
+    <h2>✏️ 編輯分類</h2>
+    
+    <div class="card my-4 p-4 shadow-sm border-0">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">分類名稱</label>
+                <input type="text" name="name" class="form-control" value="{{ category.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">英文縮寫</label>
+                <input type="text" name="slug" class="form-control" value="{{ category.slug }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">分類描述</label>
+                <textarea name="description" class="form-control" rows="2">{{ category.description }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">儲存修改</button>
+            <a href="/admin/categories" class="btn btn-secondary">取消返回</a>
+        </form>
+    </div>
+
+{% endblock %}

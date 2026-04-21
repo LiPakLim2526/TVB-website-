@@ -1,0 +1,58 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>✏️ 編輯影片內容</h2>
+        <a href="/admin/videos" class="btn btn-outline-secondary">返回列表</a>
+    </div>
+    
+    <div class="card p-4 shadow-sm border-0">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">影片標題</label>
+                    <input type="text" name="title" class="form-control" value="{{ video.title }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">所屬分類</label>
+                    <select name="category_id" class="form-select" required>
+                        {% for c in categories %}
+                        <option value="{{ c.category_id }}" {% if c.category_id == video.category_id %}selected{% endif %}>
+                            {{ c.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">封面圖片網址</label>
+                <input type="text" name="cover_url" class="form-control" value="{{ video.cover_url }}">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">影片連結 (YouTube/Vimeo)</label>
+                <input type="text" name="video_url" class="form-control" value="{{ video.video_url }}">
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">影片時長 (秒)</label>
+                    <input type="number" name="duration" class="form-control" value="{{ video.duration }}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">影片描述</label>
+                <textarea name="description" class="form-control" rows="3">{{ video.description }}</textarea>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success px-4">儲存修改</button>
+                <a href="/admin/videos" class="btn btn-light px-4 ms-2">取消</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

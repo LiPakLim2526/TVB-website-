@@ -1,18 +1,15 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment
+from flask import request, redirect, url_for, flash
 import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootroot@db:3306/tvb_charity_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootroot@db:3306/tvb_charity_db?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
-class Video(db.Model):
-    __tablename__ = 'videos'
-    video_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
 
 @app.route('/')
 def index():
@@ -67,6 +64,42 @@ def news():
     ]
     return render_template('news.html', artist_news=artist_news, artist_news_data=artist_news_data, funny_data=funny_data, hot_data=hot_data)
 
+@app.route('/admin/news', methods=['GET', 'POST'])
+def admin_news():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        image_url = request.form.get('image_url')
+        
+        new_article = NewsArticle(title=title, content=content, image_url=image_url)
+        
+        db.session.add(new_article)
+        db.session.commit()
+        return redirect(url_for('admin_news'))
+
+    articles = NewsArticle.query.order_by(NewsArticle.published_at.desc()).all()
+    return render_template('admin_news.html', articles=articles)
+
+@app.route('/admin/news/delete/<int:id>')
+def delete_news(id):
+    article = NewsArticle.query.get_or_404(id)
+    db.session.delete(article)
+    db.session.commit()
+    return redirect(url_for('admin_news'))
+
+@app.route('/admin/news/edit/<int:id>', methods=['GET', 'POST'])
+def edit_news(id):
+    article = NewsArticle.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        article.title = request.form.get('title')
+        article.content = request.form.get('content')
+        article.image_url = request.form.get('image_url')
+        
+        db.session.commit()
+        return redirect(url_for('admin_news'))
+        
+    return render_template('admin_news_edit.html', article=article)
 
 @app.route('/login')
 def login_page(): 
@@ -155,6 +188,106 @@ def charity():
 
     
     return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center, db_activities=db_activities)
+
+@app.route('/admin/categories', methods=['GET', 'POST'])
+def admin_categories():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        slug = request.form.get('slug') # 網址縮寫，例如 'events'
+        description = request.form.get('description')
+        
+        new_category = Category(name=name, slug=slug, description=description)
+        db.session.add(new_category)
+        db.session.commit()
+        return redirect(url_for('admin_categories'))
+
+    categories = Category.query.all()
+    return render_template('admin_categories.html', categories=categories)
+
+@app.route('/admin/categories/edit/<int:id>', methods=['GET', 'POST'])
+def edit_category(id):
+    category = Category.query.get_or_404(id)
+    if request.method == 'POST':
+        category.name = request.form.get('name')
+        category.slug = request.form.get('slug')
+        category.description = request.form.get('description')
+        db.session.commit()
+        return redirect(url_for('admin_categories'))
+    
+    return render_template('admin_categories_edit.html', category=category)
+
+@app.route('/admin/categories/delete/<int:id>')
+def delete_category(id):
+    category = Category.query.get_or_404(id)
+    db.session.delete(category)
+    db.session.commit()
+    return redirect(url_for('admin_categories'))
+
+@app.route('/admin/videos', methods=['GET', 'POST'])
+def admin_videos():
+    if request.method == 'POST':
+        new_video = Video(
+            title=request.form.get('title'),
+            cover_url=request.form.get('cover_url'),
+            video_url=request.form.get('video_url'),
+            description=request.form.get('description'),
+            duration=request.form.get('duration'),
+            category_id=request.form.get('category_id')
+        )
+        db.session.add(new_video)
+        db.session.commit()
+        return redirect(url_for('admin_videos'))
+
+    videos = Video.query.all()
+    categories = Category.query.all()
+    return render_template('admin_videos.html', videos=videos, categories=categories)
+
+@app.route('/admin/videos/edit/<int:id>', methods=['GET', 'POST'])
+def edit_video(id):
+    video = Video.query.get_or_404(id)
+    if request.method == 'POST':
+        video.title = request.form.get('title')
+        video.cover_url = request.form.get('cover_url')
+        video.video_url = request.form.get('video_url')
+        video.description = request.form.get('description')
+        video.duration = request.form.get('duration')
+        video.category_id = request.form.get('category_id')
+        db.session.commit()
+        return redirect(url_for('admin_videos'))
+    
+    categories = Category.query.all()
+    return render_template('admin_videos_edit.html', video=video, categories=categories)
+
+@app.route('/admin/videos/delete/<int:id>')
+def delete_video(id):
+    video = Video.query.get_or_404(id)
+    db.session.delete(video)
+    db.session.commit()
+    return redirect(url_for('admin_videos'))
+
+@app.route('/admin/banners', methods=['GET', 'POST'])
+def admin_banners():
+    if request.method == 'POST':
+        new_banner = Banner(
+            title=request.form.get('title'),
+            image_url=request.form.get('image_url'),
+            link_url=request.form.get('link_url'),
+            display_order=request.form.get('display_order', 0),
+            is_active=1 if request.form.get('is_active') else 0
+        )
+        db.session.add(new_banner)
+        db.session.commit()
+        return redirect(url_for('admin_banners'))
+
+    banners = Banner.query.order_by(Banner.display_order.desc()).all()
+    return render_template('admin_banners.html', banners=banners)
+
+@app.route('/admin/banners/delete/<int:id>')
+def delete_banner(id):
+    banner = Banner.query.get_or_404(id)
+    db.session.delete(banner)
+    db.session.commit()
+    return redirect(url_for('admin_banners'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)

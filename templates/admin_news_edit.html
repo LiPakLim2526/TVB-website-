@@ -1,0 +1,26 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+
+    <h2>✏️ 編輯新聞</h2>
+    
+    <div class="card my-4 p-4 shadow-sm border-0">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">新聞標題</label>
+                <input type="text" name="title" class="form-control" value="{{ article.title }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">內容文字</label>
+                <textarea name="content" class="form-control" rows="5">{{ article.content }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">圖片網址</label>
+                <input type="text" name="image_url" class="form-control" value="{{ article.image_url }}">
+            </div>
+            <button type="submit" class="btn btn-success">儲存修改</button>
+            <a href="/admin/news" class="btn btn-secondary">取消返回</a>
+        </form>
+    </div>
+
+{% endblock %}

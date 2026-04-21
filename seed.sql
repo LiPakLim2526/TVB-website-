@@ -1,7 +1,28 @@
+SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE DATABASE IF NOT EXISTS tvb_charity_db;
 USE tvb_charity_db;
 
+DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS videos;
+DROP TABLE IF EXISTS news_articles;
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100)
+) DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_id INT,
+    video_id INT,
+    parent_id INT,
+    is_deleted TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (video_id) REFERENCES videos(video_id) ON DELETE CASCADE
+) DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,6 +42,7 @@ CREATE TABLE IF NOT EXISTS videos (
     cover_url VARCHAR(255),
     video_url VARCHAR(255),
     description TEXT,
+    duration INT,
     category_id INT,
     views INT DEFAULT 0,
     release_date DATE
@@ -32,21 +54,28 @@ CREATE TABLE IF NOT EXISTS video_tags (
     PRIMARY KEY (video_id, tag_id)
 );
 
-CREATE TABLE IF NOT EXISTS news_articles (
+
+CREATE TABLE news_articles (
     article_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    content TEXT,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    author VARCHAR(100),
+    published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     image_url VARCHAR(255),
     view_count INT DEFAULT 0
-);
+) DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS banners (
+DROP TABLE IF EXISTS banners;
+CREATE TABLE banners (
     banner_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    image_url VARCHAR(255),
+    title VARCHAR(100),
+    image_url VARCHAR(255) NOT NULL,
     link_url VARCHAR(255),
-    display_order INT
-);
+    display_order INT DEFAULT 0,
+    is_active TINYINT(1) DEFAULT 1,
+    start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    end_date DATETIME DEFAULT NULL
+) DEFAULT CHARSET=utf8mb4;
 
 
 INSERT IGNORE INTO categories (name, slug, description) VALUES 
@@ -68,3 +97,5 @@ INSERT IGNORE INTO news_articles (title, content, image_url, view_count) VALUES
 
 INSERT IGNORE INTO banners (title, image_url, link_url, display_order) VALUES 
 ('愛心送暖 2026', 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c', 'https://www.tvb.com/1011722', 1);
+
+SET FOREIGN_KEY_CHECKS = 1;

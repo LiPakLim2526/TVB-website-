@@ -9,7 +9,7 @@ def index():
 
 @app.route('/news')
 def news():
-    return redirect('/funnyhot')  # 👈 這裡改成跳轉！
+    return redirect('/funnyhot')  
 
 
 @app.route('/funnyhot')

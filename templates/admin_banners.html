@@ -1,0 +1,58 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+
+    <h2>🖼️ 首頁橫幅管理</h2>
+    
+    <div class="card my-4 p-4 shadow-sm border-0">
+        <h4>新增大圖輪播</h4>
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">橫幅標題</label>
+                    <input type="text" name="title" class="form-control" placeholder="例如：愛心基金台慶特別報導">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">圖片網址</label>
+                    <input type="text" name="image_url" class="form-control" required placeholder="https://...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">跳轉連結</label>
+                    <input type="text" name="link_url" class="form-control" placeholder="點擊圖片後要去哪？">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">排序權重</label>
+                    <input type="number" name="display_order" class="form-control" value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">新增橫幅</button>
+        </form>
+    </div>
+
+    <table class="table table-hover bg-white shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>排序</th>
+                <th>預覽圖</th>
+                <th>標題</th>
+                <th>跳轉網址</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in banners %}
+            <tr>
+                <td>{{ b.display_order }}</td>
+                <td><img src="{{ b.image_url }}" width="150" class="rounded shadow-sm"></td>
+                <td>{{ b.title }}</td>
+                <td class="small">{{ b.link_url }}</td>
+                <td>
+                    <a href="/admin/banners/delete/{{ b.banner_id }}" class="btn btn-danger btn-sm" onclick="return confirm('確定移除這張圖嗎？')">移除</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
