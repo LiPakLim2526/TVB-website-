@@ -41,7 +41,6 @@ CREATE TABLE `banners` (
 
 LOCK TABLES `banners` WRITE;
 /*!40000 ALTER TABLE `banners` DISABLE KEYS */;
-INSERT INTO `banners` VALUES (1,'æ„›å¿ƒé€æš– 2026','https://images.unsplash.com/photo-1488521787991-ed7bbaae773c','https://www.tvb.com/1011722',1,1,'2026-04-24 15:02:48',NULL);
 /*!40000 ALTER TABLE `banners` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +156,6 @@ CREATE TABLE `news_articles` (
 
 LOCK TABLES `news_articles` WRITE;
 /*!40000 ALTER TABLE `news_articles` DISABLE KEYS */;
-INSERT INTO `news_articles` VALUES (1,'æ„›å¿ƒåŸºé‡‘æ’¥æ¬¾ç™¾è¬æ´åŠ©ç½æ°‘','ç„¡ç¶«é›»è¦–æš¨è·è—å“¡æ„›å¿ƒåŸºé‡‘ä»Šæ—¥å®£ä½ˆç·Šæ€¥æ’¥æ¬¾...',NULL,'2026-04-24 15:02:48','https://www.tvb.com/1010380',5600,NULL,0);
 /*!40000 ALTER TABLE `news_articles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,7 +227,6 @@ CREATE TABLE `video_tags` (
 
 LOCK TABLES `video_tags` WRITE;
 /*!40000 ALTER TABLE `video_tags` DISABLE KEYS */;
-INSERT INTO `video_tags` VALUES (1,2),(2,1),(2,3);
 /*!40000 ALTER TABLE `video_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,7 +257,6 @@ CREATE TABLE `videos` (
 
 LOCK TABLES `videos` WRITE;
 /*!40000 ALTER TABLE `videos` DISABLE KEYS */;
-INSERT INTO `videos` VALUES (1,'ã€Œæ„›å¿ƒé€æš–ã€2026 å•Ÿå‹•ç¦®','https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500','https://www.youtube.com/embed/dQw4w9WgXcQ','åŒ¯èšå…¨å°æ„›å¿ƒï¼Œæ­£å¼å•Ÿå‹•å¹´åº¦é€æš–è¨ˆç•«...',NULL,1,1250,'2026-03-12'),(2,'å¤§åŸ”å®ç¦è‹‘æ´åŠ©é€²å±•','https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?w=500','https://www.youtube.com/embed/3AtDnEC4zak','æ„Ÿè¬å„ç•Œææ¬¾ï¼Œç›®å‰æ¬¾é …å·²é€é”å—å½±éŸ¿ä½æˆ¶...',NULL,2,890,'2025-11-28'),(3,'é’å°‘å¹´è­¦è¨Šç±ƒçƒå‹èª¼è³½','https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500','https://www.youtube.com/embed/dQw4w9WgXcQ','é«”è‚²æŽ¨å»£èˆ‡æ…ˆå–„çµåˆï¼Œå±•ç¾æ´»åŠ›èˆ‡æ„›å¿ƒ...',NULL,1,2100,'2025-03-05');
 /*!40000 ALTER TABLE `videos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -273,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-24 15:22:34
+-- Dump completed on 2026-04-24 15:32:02
