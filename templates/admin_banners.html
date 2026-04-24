@@ -43,7 +43,12 @@
         <tbody>
             {% for b in banners %}
             <tr>
-                <td>{{ b.display_order }}</td>
+                <td>
+                    <form action="{{ url_for('update_banner_order', banner_id=b.banner_id) }}" method="POST" class="d-flex align-items-center">
+                        <input type="number" name="display_order" value="{{ b.display_order }}" class="form-control form-control-sm text-center me-2" style="width: 70px;">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">更新</button>
+                    </form>
+                </td>
                 <td><img src="{{ b.image_url }}" width="150" class="rounded shadow-sm"></td>
                 <td>{{ b.title }}</td>
                 <td class="small">{{ b.link_url }}</td>

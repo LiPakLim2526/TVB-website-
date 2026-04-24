@@ -1,0 +1,76 @@
+{% extends 'admin_layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">🗂️ 資料中心管理</h2>
+        <a href="{{ url_for('charity') }}" class="btn btn-outline-primary" target="_blank">預覽前台頁面</a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h5 class="card-title fw-bold mb-3">發布新資料項目</h5>
+            <form action="{{ url_for('admin_datacenter') }}" method="POST">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">資料標題</label>
+                        <input type="text" name="title" class="form-control" placeholder="例如：援助詳情" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">圖片網址</label>
+                        <input type="text" name="image_url" class="form-control" placeholder="https://...">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">跳轉連結</label>
+                        <input type="text" name="link_url" class="form-control" placeholder="https://...">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary px-4">立即發布到資料中心</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4" style="width: 150px;">排序</th>
+                        <th>預覽圖</th>
+                        <th>標題內容</th>
+                        <th>發布日期</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="ps-4">
+                            <form action="{{ url_for('update_datacenter_order', item_id=item.item_id) }}" method="POST" class="d-flex">
+                                <input type="number" name="display_order" value="{{ item.display_order }}" class="form-control form-control-sm text-center me-2" style="width: 60px;">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">更新</button>
+                            </form>
+                        </td>
+                        <td>
+                            {% if item.image_url %}
+                            <img src="{{ item.image_url }}" style="height: 50px; width: 80px; object-fit: cover; border-radius: 4px;">
+                            {% else %}
+                            <div class="bg-light text-muted d-flex align-items-center justify-content-center" style="height: 50px; width: 80px; font-size: 10px;">無圖片</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="fw-bold">{{ item.title }}</div>
+                            <small class="text-muted">{{ item.link_url[:50] }}...</small>
+                        </td>
+                        <td>{{ item.published_at.strftime('%Y-%m-%d') }}</td>
+                        <td class="text-center">
+                            <a href="{{ url_for('delete_datacenter', item_id=item.item_id) }}" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除這筆資料嗎？')">移除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

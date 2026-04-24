@@ -18,6 +18,10 @@
                 <label class="form-label">圖片網址</label>
                 <input type="text" name="image_url" class="form-control" value="{{ article.image_url }}">
             </div>
+            <div class="mb-3">
+                <label class="form-label">連結網址</label>
+                <input type="text" name="link_url" class="form-control" value="{{ article.link_url if article.link_url else '' }}">
+            </div>
             <button type="submit" class="btn btn-success">儲存修改</button>
             <a href="/admin/news" class="btn btn-secondary">取消返回</a>
         </form>

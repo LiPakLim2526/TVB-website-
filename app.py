@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment
+from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment, DataCenterItem
 from flask import request, redirect, url_for, flash
 import os
 
@@ -70,8 +70,9 @@ def admin_news():
         title = request.form.get('title')
         content = request.form.get('content')
         image_url = request.form.get('image_url')
-        
-        new_article = NewsArticle(title=title, content=content, image_url=image_url)
+        link_url=request.form.get('link_url')
+        news_list = NewsArticle.query.order_by(NewsArticle.display_order.desc(), NewsArticle.article_id.desc()).all()
+        new_article = NewsArticle(title=title, content=content, image_url=image_url, link_url=link_url)
         
         db.session.add(new_article)
         db.session.commit()
@@ -79,6 +80,17 @@ def admin_news():
 
     articles = NewsArticle.query.order_by(NewsArticle.published_at.desc()).all()
     return render_template('admin_news.html', articles=articles)
+
+@app.route('/admin/news/update_order/<int:article_id>', methods=['POST'])
+def update_news_order(article_id):
+    news = NewsArticle.query.get_or_404(article_id)
+    new_order = request.form.get('display_order', type=int)
+    
+    if new_order is not None:
+        news.display_order = new_order
+        db.session.commit()
+        
+    return redirect(url_for('admin_news'))
 
 @app.route('/admin/news/delete/<int:id>')
 def delete_news(id):
@@ -95,7 +107,7 @@ def edit_news(id):
         article.title = request.form.get('title')
         article.content = request.form.get('content')
         article.image_url = request.form.get('image_url')
-        
+        article.link_url = request.form.get('link_url')
         db.session.commit()
         return redirect(url_for('admin_news'))
         
@@ -107,87 +119,14 @@ def login_page():
 
 @app.route('/charity')
 def charity():
+    banners = Banner.query.order_by(Banner.display_order.desc(), Banner.banner_id.desc()).limit(3).all()
+    news_list = NewsArticle.query.order_by(NewsArticle.display_order.desc(), NewsArticle.article_id.desc()).limit(8).all()
     
-    db_activities = Video.query.all() 
+  
+    data_items = DataCenterItem.query.order_by(DataCenterItem.display_order.desc(), DataCenterItem.item_id.desc()).limit(4).all()
     
-    
-    hero_data = {
-        "main": {
-            "title": "無綫電視暨職藝員愛心基金", 
-            "date": "2026-03-12 16:00", 
-            "img": "https://www.tvb.com/thumbor/gakocLO0px_yZTGdilaKVYhlK00=/1600x900/filters:quality(80)/public/tvbcom/article/images/202507/d279ec00-899b-4b58-b916-786b152cb58a.jpg",
-            "url": "https://www.tvb.com/1004280"
-        },
-        "sub1": {
-            "title": "援助詳情", 
-            "img": "https://www.tvb.com/thumbor/iGtzSJmUzxBkRX8vAavBP99fUnQ=/1600x900/filters:quality(80)/public/tvbcom/article/images/202412/e0fcc4c3-9684-4702-88a3-a90155305175.jpg",
-            "url": "https://www.tvb.com/1004283"
-        },
-        "sub2": {
-            "title": "「善款移交暨委任愛心大使」活動", 
-            "img": "https://www.tvb.com/thumbor/DsjFz2VepzXCDv7e341YyCdDgeo=/1600x900/filters:water(21):quality(80)/public/tvbcom/article/images/202504/14991061-c824-426d-aaf7-bf289e64d843.jpg",
-            "url": "https://www.tvb.com/1006051"
-        }
-    }
 
-    
-    activities = [
-        {
-            "title": "無綫電視暨職藝員愛心基金「愛心送暖2026」", 
-            "date": "2026-02-05 17:10", 
-            "img": "https://www.tvb.com/thumbor/n1fyaEaigTXQJelqQkdvNowygEk=/1600x900/filters:water(21):quality(80)/public/tvbcom/article/images/202602/9042946f-d344-43bf-918d-ed0884ef3948.jpg",
-            "url": "https://www.tvb.com/1011722"
-        },
-        {
-            "title": "愛心不止步 TVB愛心基金與社會各界為宏福苑受影響居民持續募款", 
-            "date": "2025-12-04 18:44", 
-            "img": "https://www.tvb.com/thumbor/D_UX7NIIE2YRu260a_X6e3fHE8w=/1600x900/filters:quality(80)/public/tvbcom/article/images/202512/dc390a0d-fcac-4d99-ac24-c378131dbfcc.jpg",
-            "url": "https://www.tvb.com/1010512"
-        },
-        {
-            "title": "TVB 電視廣播城內兩間員工餐廳12月1日全日收益不扣除成本 全數捐助「宏福苑｣ 受影響居民", 
-            "date": "2025-12-01 17:54", 
-            "img": "https://www.tvb.com/thumbor/5bhD8OHHcyk_KmNBjsH0K0to7Uc=/1600x900/filters:quality(80)/public/tvbcom/article/images/202512/08994a6c-a138-4375-a972-e9cba63ad633.jpg",
-            "url": "https://www.tvb.com/1010414"
-        },
-        {
-            "title": "「無綫電視暨職藝員愛心基金」捐出港幣100萬元予「大埔宏福苑援助基金」", 
-            "date": "2025-11-28 16:20", 
-            "img": "https://www.tvb.com/thumbor/fHxHZg_K_B0pVaO36CDVLGgqFk4=/1600x900/filters:quality(80)/public/tvbcom/article/images/202511/46960c5d-5982-4075-b4bf-bafd97080794.jpg",
-            "url": "https://www.tvb.com/1010380"
-        },
-        {
-            "title": "TVB x 少年警訊慈善開年籃球友誼賽2025圓滿舉行", 
-            "date": "2025-03-05 11:01", 
-            "img": "https://www.tvb.com/thumbor/6nrqyNLZJkBWHXA16-GyKuATgxc=/1600x900/filters:quality(80)/public/tvbcom/article/images/202503/1e7e11be-0007-4b59-94fd-d9d4f9d829f4.jpg",
-            "url": "https://www.tvb.com/1005413"
-        },
-        {
-            "title": "TVB 賽馬日2025", 
-            "date": "2025-02-20 12:43", 
-            "img": "https://www.tvb.com/thumbor/RpAur2i9w4a6lW1Kc7YCG6Q1Jmw=/1600x900/filters:quality(80)/public/tvbcom/article/images/202502/933c886f-add8-4fa8-8ec9-99c45f5b1250.jpg",
-            "url": "https://www.tvb.com/1005282"
-        }
-    ]
-
-    
-    data_center = [
-        {
-            "title": "援助詳情", 
-            "date": "2026-12-12 16:30", 
-            "img": "https://www.tvb.com/thumbor/iGtzSJmUzxBkRX8vAavBP99fUnQ=/1600x900/filters:quality(80)/public/tvbcom/article/images/202412/e0fcc4c3-9684-4702-88a3-a90155305175.jpg",
-            "url": "https://www.tvb.com/1004283"
-        },
-        {
-            "title": "無綫電視暨職藝員愛心基金", 
-            "date": "2026-12-12 16:30", 
-            "img": "https://www.tvb.com/thumbor/gakocLO0px_yZTGdilaKVYhlK00=/1600x900/filters:quality(80)/public/tvbcom/article/images/202507/d279ec00-899b-4b58-b916-786b152cb58a.jpg",
-            "url": "https://www.tvb.com/1004280"
-        }
-    ]
-
-    
-    return render_template('charity.html', hero_data=hero_data, activities=activities, data_center=data_center, db_activities=db_activities)
+    return render_template('charity.html', banners=banners, news_list=news_list, data_items=data_items)
 
 @app.route('/admin/categories', methods=['GET', 'POST'])
 def admin_categories():
@@ -282,12 +221,79 @@ def admin_banners():
     banners = Banner.query.order_by(Banner.display_order.desc()).all()
     return render_template('admin_banners.html', banners=banners)
 
+@app.route('/admin/banners/update_order/<int:banner_id>', methods=['POST'])
+def update_banner_order(banner_id):
+    banner = Banner.query.get_or_404(banner_id)
+    
+    new_order = request.form.get('display_order', type=int)
+    
+    if new_order is not None:
+        banner.display_order = new_order
+        db.session.commit()
+        
+    return redirect(url_for('admin_banners'))
+
 @app.route('/admin/banners/delete/<int:id>')
 def delete_banner(id):
     banner = Banner.query.get_or_404(id)
     db.session.delete(banner)
     db.session.commit()
     return redirect(url_for('admin_banners'))
+
+@app.route('/admin/banners/edit/<int:banner_id>', methods=['GET', 'POST'])
+def edit_banner(banner_id):
+    banner = Banner.query.get_or_404(banner_id)
+    if request.method == 'POST':
+        banner.title = request.form.get('title')
+        banner.image_url = request.form.get('image_url')
+        banner.link_url = request.form.get('link_url')
+        banner.display_order = request.form.get('display_order', type=int)
+        db.session.commit()
+        return redirect(url_for('admin_banners'))
+    return render_template('edit_banner.html', banner=banner)
+
+@app.route('/admin/datacenter', methods=['GET', 'POST'])
+def admin_datacenter():
+    if request.method == 'POST':
+        new_item = DataCenterItem(
+            title=request.form.get('title'),
+            image_url=request.form.get('image_url'),
+            link_url=request.form.get('link_url')
+        )
+        db.session.add(new_item)
+        db.session.commit()
+        return redirect(url_for('admin_datacenter'))
+
+    items = DataCenterItem.query.order_by(DataCenterItem.display_order.desc(), DataCenterItem.item_id.desc()).all()
+    return render_template('admin_datacenter.html', items=items)
+
+@app.route('/admin/datacenter/delete/<int:item_id>')
+def delete_datacenter(item_id):
+    item = DataCenterItem.query.get_or_404(item_id)
+    db.session.delete(item)
+    db.session.commit()
+    return redirect(url_for('admin_datacenter'))
+
+@app.route('/admin/datacenter/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_datacenter(item_id):
+    item = DataCenterItem.query.get_or_404(item_id)
+    if request.method == 'POST':
+        item.title = request.form.get('title')
+        item.image_url = request.form.get('image_url')
+        item.link_url = request.form.get('link_url')
+        item.display_order = request.form.get('display_order', type=int)
+        db.session.commit()
+        return redirect(url_for('admin_datacenter'))
+    return render_template('edit_datacenter.html', item=item)
+
+@app.route('/admin/datacenter/update_order/<int:item_id>', methods=['POST'])
+def update_datacenter_order(item_id):
+    item = DataCenterItem.query.get_or_404(item_id)
+    new_order = request.form.get('display_order', type=int)
+    if new_order is not None:
+        item.display_order = new_order
+        db.session.commit()
+    return redirect(url_for('admin_datacenter'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)

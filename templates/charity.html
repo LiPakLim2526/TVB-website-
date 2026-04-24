@@ -6,86 +6,75 @@
     <title>TVB - 愛心基金</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
         body { background-color: #ffffff; color: #333; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
-        
         .navbar { border-bottom: 1px solid #eee; padding: 10px 0; }
         .nav-link { color: #333 !important; font-weight: 500; margin-right: 15px; }
         .search-bar { background-color: #f2f2f2; border-radius: 20px; border: none; padding: 5px 15px; }
-
-        .text-truncate-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
+        .text-truncate-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .footer-rainbow-bar { height: 4px; width: 100%; display: flex; margin-top: 80px; }
         .rainbow-blue { background-color: #00AEEF; flex: 1; }
         .rainbow-green { background-color: #8CC63F; flex: 1; }
         .rainbow-red { background-color: #ED1C24; flex: 1; }
-
         .footer-main { padding: 60px 0 30px; background-color: #fff; }
         .footer-column h6 { font-weight: bold; margin-bottom: 20px; color: #000; }
         .footer-link { display: block; color: #666; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
         .footer-link:hover { color: #0056b3; }
-
         .footer-bottom { border-top: 1px solid #eee; padding-top: 30px; margin-top: 40px; }
         .footer-logo { width: 100px; margin-bottom: 15px; }
         .copyright { font-size: 12px; color: #999; }
-        
         .social-icons { display: flex; gap: 18px; align-items: center; }
         .social-icons a { color: #333; font-size: 20px; text-decoration: none; transition: color 0.2s; }
         .social-icons a:hover { color: #0056b3; }
-        
-        .custom-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; filter: grayscale(0%); }
-        .custom-icon:hover { filter: none; }
-
+        .custom-icon { width: 20px; height: 20px; object-fit: contain; vertical-align: middle; }
         .app-icons img { height: 32px; margin-right: 12px; border-radius: 6px; border: 1px solid #f0f0f0; }
-        .copyright { font-size: 12px; color: #999; margin-top: 15px; }
-
-        .cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; background-color: rgba(26, 26, 26, 0.95); color: white; padding: 15px 25px; border-radius: 10px; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-
-
         .charity-hero-main { height: 400px; position: relative; border-radius: 12px; overflow: hidden; }
         .charity-hero-sub { height: 192px; position: relative; border-radius: 12px; overflow: hidden; }
         .charity-img-bg { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .charity-card:hover .charity-img-bg { transform: scale(1.05); }
-        .charity-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 20px; color: white;
-        }
-        .charity-card-wrapper { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; transition: box-shadow 0.2s; }
+        .charity-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; color: white; }
+        .charity-card-wrapper { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; transition: box-shadow 0.2s; height: 100%; }
         .charity-card-wrapper:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .charity-card-img { height: 180px; width: 100%; object-fit: cover; }
-        .charity-tag { font-size: 11px; color: #666; margin-bottom: 5px; display: block; }
-        /* ================================== */
+        .charity-card-img { width: 100%; object-fit: cover; }
+        .charity-tag { font-size: 12px; color: #888; display: block; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top bg-white">
+<nav class="navbar navbar-expand-lg sticky-top bg-white py-3">
     <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">
             <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png" width="80">
         </a>
         
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">主頁</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">娛樂焦點</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">節目重溫</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">健康生活</a></li>
                 <li class="nav-item"><a class="nav-link text-primary fw-bold" href="{{ url_for('charity') }}">愛心基金</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">藝人</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">串流平台</a></li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="#">
+                        串流平台 <i class="fas fa-chevron-down ms-1" style="font-size: 10px;"></i>
+                    </a>
+                </li>
             </ul>
-            
-            <div class="d-flex align-items-center">
-                <input class="search-bar me-3" type="text" placeholder="搜尋">
-                <a href="{{ url_for('login_page') }}">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="cursor: pointer;">
+
+            <div class="ms-auto d-flex align-items-center">
+                <div class="input-group search-group me-3" style="width: 250px;">
+                    <input type="text" class="form-control border-end-0 search-input" placeholder="搜尋" 
+                           style="background-color: #f2f5f7; border-radius: 25px 0 0 25px; border-color: #e1e8ed; padding-left: 20px;">
+                    <button class="btn border-start-0 search-btn" type="button" 
+                            style="background-color: #f2f5f7; border-radius: 0 25px 25px 0; border-color: #e1e8ed; color: #333;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <a href="{{ url_for('login_page') }}" class="user-profile-icon d-flex align-items-center justify-content-center" 
+                        style="width: 40px; height: 40px; border: 1px solid #e1e8ed; border-radius: 50%; color: #333; text-decoration: none;">
+                        <i class="far fa-user" style="font-size: 20px;"></i>
+                        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="cursor: pointer;">
                 </a>
             </div>
         </div>
@@ -93,47 +82,51 @@
 </nav>
 
 <div class="container mt-4">
-    
     <div class="row g-3 mb-5 charity-card">
         <div class="col-lg-8">
-            <a href="{{ hero_data.main.url }}" target="_blank" class="d-block charity-hero-main">
-                <img src="{{ hero_data.main.img }}" class="charity-img-bg" alt="主視角">
+            {% if banners|length >= 1 %}
+            <a href="{{ banners[0].link_url }}" target="_blank" class="d-block charity-hero-main shadow-sm text-decoration-none">
+                <img src="{{ banners[0].image_url }}" class="charity-img-bg" alt="{{ banners[0].title }}">
                 <div class="charity-overlay">
-                    <h4 class="fw-bold mb-1">{{ hero_data.main.title }}</h4>
-                    <small class="text-light opacity-75">發佈時間: {{ hero_data.main.date }}</small>
+                    <h4 class="fw-bold mb-1">{{ banners[0].title }}</h4>
                 </div>
+            
             </a>
+            {% else %}
+            <div class="d-block charity-hero-main bg-light d-flex align-items-center justify-content-center text-muted border">請至後台新增 Banner</div>
+            {% endif %}
         </div>
+        
         <div class="col-lg-4 d-flex flex-column gap-3">
-            <a href="{{ hero_data.sub1.url }}" target="_blank" class="d-block charity-hero-sub charity-card">
-                <img src="{{ hero_data.sub1.img }}" class="charity-img-bg" alt="援助詳情">
-                <div class="charity-overlay p-3">
-                    <h5 class="fw-bold mb-0">{{ hero_data.sub1.title }}</h5>
-                </div>
-            </a>
-            <a href="{{ hero_data.sub2.url }}" target="_blank" class="d-block charity-hero-sub charity-card">
-                <img src="{{ hero_data.sub2.img }}" class="charity-img-bg" alt="愛心大使">
-                <div class="charity-overlay p-3">
-                    <h5 class="fw-bold mb-0">{{ hero_data.sub2.title }}</h5>
-                </div>
-            </a>
+            {% for i in range(1, 3) %}
+                {% if banners|length > i %}
+                <a href="{{ banners[i].link_url }}" target="_blank" class="d-block charity-hero-sub charity-card shadow-sm text-decoration-none">
+                    <img src="{{ banners[i].image_url }}" class="charity-img-bg" alt="{{ banners[i].title }}">
+                    <div class="charity-overlay p-3"><h5 class="fw-bold mb-0">{{ banners[i].title }}</h5></div>
+                </a>
+                {% else %}
+                <div class="d-block charity-hero-sub bg-light d-flex align-items-center justify-content-center text-muted border">等待圖 {{ i+1 }}</div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 
     <div class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">活動消息</h4>
-            <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill px-3">查看更多 ></a>
+            <h4 class="fw-bold mb-0">最新活動與消息</h4>
+            <a href="https://www.tvb.com/eventnews-c/%E6%B4%BB%E5%8B%95%E6%B6%88%E6%81%AF" class="btn btn-outline-secondary btn-sm rounded-pill px-3">查看更多 ></a>
         </div>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for act in activities %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for news in news_list %}
             <div class="col">
-                <a href="{{ act.url }}" target="_blank" class="text-decoration-none text-dark d-block h-100">
-                    <div class="charity-card-wrapper h-100 d-flex flex-column">
-                        <img src="{{ act.img }}" class="charity-card-img" alt="活動圖片">
+                <a href="{{ news.link_url if news.link_url else url_for('news') }}" target="_blank" class="text-decoration-none text-dark d-block h-100">
+                    <div class="charity-card-wrapper d-flex flex-column shadow-sm border-0">
+                        <img src="{{ news.image_url }}" class="charity-card-img" style="height: 180px;" alt="{{ news.title }}">
                         <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
-                            <h6 class="fw-bold mb-2 text-truncate-2" style="line-height: 1.4;">{{ act.title }}</h6>
-                            <span class="charity-tag mt-2">活動消息 · {{ act.date }}</span>
+                            <div>
+                                <h6 class="fw-bold mb-2 text-truncate-2">{{ news.title }}</h6>
+                                <span class="charity-tag mt-2">活動消息 {{ news.published_at.strftime('%Y-%m-%d %H:%M') if news.published_at else '' }}</span>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -145,27 +138,29 @@
     <div class="mb-5">
         <h4 class="fw-bold mb-3">資料中心</h4>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-            {% for data in data_center %}
+            {% for item in data_items %}
             <div class="col">
-                <a href="{{ data.url }}" target="_blank" class="text-decoration-none text-dark d-block h-100">
-                    <div class="charity-card-wrapper h-100 d-flex flex-column">
-                        <img src="{{ data.img }}" class="charity-card-img" style="height: 140px;" alt="資料圖片">
+                <a href="{{ item.link_url if item.link_url else '#' }}" target="_blank" class="text-decoration-none text-dark d-block h-100">
+                    <div class="charity-card-wrapper d-flex flex-column shadow-sm border-0">
+                        <img src="{{ item.image_url }}" class="charity-card-img" style="height: 140px;" alt="{{ item.title }}">
                         <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
-                            <h6 class="fw-bold mb-2 text-truncate-2">{{ data.title }}</h6>
-                            <span class="charity-tag mt-1">資料中心 · {{ data.date }}</span>
+                            <div>
+                                <h6 class="fw-bold mb-2 text-truncate-2">{{ item.title }}</h6>
+                                <span class="charity-tag mt-2">資料中心</span>
+                            </div>
                         </div>
                     </div>
                 </a>
             </div>
+            {% else %}
+            <p class="text-muted">目前暫無資料。</p>
             {% endfor %}
         </div>
     </div>
-
 </div>
+
 <div class="footer-rainbow-bar">
-    <div class="rainbow-blue"></div>
-    <div class="rainbow-green"></div>
-    <div class="rainbow-red"></div>
+    <div class="rainbow-blue"></div><div class="rainbow-green"></div><div class="rainbow-red"></div>
 </div>
 
 <footer class="footer-main">
@@ -245,12 +240,5 @@
         </div>
     </div>
 </footer>
-
-<div class="cookie-banner" id="cookieBox">
-    <div>🍪 本服務使用 Cookies 以維持可靠性 <a href="https://www.tvb.com/terms/tvb_member_cookies_policy/" class="text-info">Cookies 政策</a></div>
-    <button class="btn btn-primary btn-sm ms-3" onclick="document.getElementById('cookieBox').style.display='none'">同意</button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

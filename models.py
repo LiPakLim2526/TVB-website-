@@ -79,6 +79,8 @@ class NewsArticle(db.Model):
     published_at = db.Column(db.DateTime, default=datetime.utcnow)
     image_url = db.Column(db.String(255))
     view_count = db.Column(db.Integer, default=0)
+    link_url = db.Column(db.Text)
+    display_order = db.Column(db.Integer, default=0)
 
 class Banner(db.Model):
     __tablename__ = 'banners'
@@ -104,3 +106,12 @@ class Comment(db.Model):
     replies = db.relationship('Comment', backref=db.backref('parent', remote_side=[comment_id]))
     
     is_deleted = db.Column(db.Boolean, default=False)
+
+class DataCenterItem(db.Model):
+    __tablename__ = 'data_center_items'
+    item_id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    image_url = db.Column(db.String(255))
+    link_url = db.Column(db.Text)
+    display_order = db.Column(db.Integer, default=0)
+    published_at = db.Column(db.DateTime, default=db.func.now())
