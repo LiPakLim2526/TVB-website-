@@ -516,5 +516,37 @@ def delete_user_cookie():
     resp.delete_cookie('last_user')
     return resp
 
+@app.route('/videos')
+def videos():
+    return render_template("videos.html")
+
+
+@app.route('/healthy-living')
+def healthy_living():
+    banners = [
+        {
+            "img": "img3.webp",
+            "title": "春卷食譜｜懷舊美食 懷舊上海春卷",
+            "meta": "流行都市｜生活 2026-04-25 11:00"
+        }
+    ]
+
+    articles = [
+        {"title":"春天潮濕易疲嗜睡｜中醫教3招防春困","img2":"img2.webp","group":"生活","link":"https://www.tvb.com/lifestyle-c/%E6%98%A5%E5%A4%A9%E9%A4%8A%E7%94%9F-%E6%98%A5%E5%A4%A9%E6%BD%AE%E6%BF%95%E6%98%93%E7%96%B2%E5%97%9C%E7%9D%A1-%E4%B8%AD%E9%86%AB%E6%95%993%E6%8B%9B%E9%A0%90%E9%98%B2%E6%98%A5%E5%9B%B0-%E6%8E%A8%E4%BB%8B%E5%81%A5%E8%84%BE%E7%A5%9B%E6%BF%95%E6%B9%AF%E6%B0%B4-1013233","date":"2026-04-24"},
+        {"title":"腐乳炸排骨食譜｜外脆內軟秘訣大公開","img2":"img3.webp","group":"生活","link":"https://www.tvb.com/lifestyle-c/%E8%85%90%E4%B9%B3%E7%82%B8%E6%8E%92%E9%AA%A8%E9%A3%9F%E8%AD%9C-2%E7%A7%98%E8%A8%A3%E4%BB%A4%E7%82%B8%E6%8E%92%E9%AA%A8%E5%A4%96%E8%84%86%E5%85%A7%E8%BB%9F-%E7%B0%A1%E5%96%AE%E5%81%9A%E5%87%BA%E9%B9%B9%E9%A6%99%E5%85%A5%E5%91%B3%E4%B8%8B%E9%85%92%E8%8F%9C-1013232"},
+        {"title":"江美儀挑戰$138柴火雞套餐","img2":"img4.webp","group":"生活","link":"https://www.tvb.com/lifestyle-c/%E5%8C%97%E4%B8%8A%E7%BE%8E%E9%A3%9F-%E6%B1%9F%E7%BE%8E%E5%84%80%E6%8C%91%E6%88%B0-138%E6%9F%B4%E7%81%AB%E9%9B%9E%E5%A5%97%E9%A4%90-%E5%8D%B3%E9%BB%9E%E5%8D%B3%E7%82%92CP%E5%80%BC%E9%AB%98-%E5%86%AC%E7%93%9C%E5%90%B8%E7%9B%A1%E8%82%89%E9%A1%9E%E9%86%AC%E6%B1%81%E7%B2%BE%E8%8F%AF-1013218"},
+        {"title":"春卷食譜｜懷舊美食","img2":"img5.webp","group":"生活","link":"https://www.tvb.com/lifestyle-c/%E6%98%A5%E5%8D%B7%E9%A3%9F%E8%AD%9C-%E6%87%B7%E8%88%8A%E7%BE%8E%E9%A3%9F-%E6%87%B7%E8%88%8A%E4%B8%8A%E6%B5%B7%E6%98%A5%E5%8D%B7-Annie%E9%BB%83%E5%A9%89%E7%91%A9-%E6%B5%81%E8%A1%8C%E9%83%BD%E5%B8%82-1013216","date":"2026-04-25"},
+        {"title":"淮山響螺煲烏雞","img2":"img6.webp","group":"生活","link":"https://www.tvb.com/lifestyle-c/%E6%B7%AE%E5%B1%B1%E9%9F%BF%E8%9E%BA%E7%85%B2%E7%83%8F%E9%9B%9E%E9%A3%9F%E8%AD%9C-25%E5%88%86%E9%90%98%E6%A5%B5%E9%80%9F%E7%85%B2%E8%B5%B7-%E9%AE%AE%E7%94%9C%E8%A3%9C%E8%85%8E-%E9%A4%8A%E9%A1%8F%E7%BE%8E%E8%82%8C-1013209","date":"2026-04-24"},
+
+        {"title":"消委會外傭中介投訴","img2":"img11.webp","group":"消費","link":"https://www.tvb.com/life-c/%E6%B6%88%E5%A7%94%E6%9C%83%E5%A4%96%E5%82%AD%E4%B8%AD%E4%BB%8B-%E5%8E%BB%E5%B9%B4%E6%8E%A5%E9%81%8E%E7%99%BE%E5%AE%97%E6%8A%95%E8%A8%B4-%E5%A4%96%E5%82%AD%E9%80%A3%E7%92%B0%E7%88%BD%E7%B4%84%E5%85%AC%E5%8F%B8%E6%8B%92%E9%80%80%E6%AC%BE-%E8%AA%9E%E8%A8%80%E8%83%BD%E5%8A%9B%E8%B2%A8%E4%B8%8D%E5%B0%8D%E8%BE%A6-1012984"},
+        {"title":"食肆投訴","img2":"img12.webp","group":"消費","link":"https://www.tvb.com/life-c/%E6%B6%88%E5%A7%94%E6%9C%83-%E6%B6%88%E5%A7%94%E6%9C%83%E5%8E%BB%E5%B9%B4%E6%8E%A5%E9%80%BE1-500%E5%AE%97%E9%A3%9F%E8%82%86%E6%8A%95%E8%A8%B4--198%E6%8B%BC%E7%9B%A4%E4%B9%B3%E8%B1%AC%E7%87%92%E9%B5%9D%E6%85%98%E8%AE%8A%E7%89%9B%F0%A6%9F%8C%E9%9D%92%E7%93%9C%E9%A3%9F%E5%AE%A2%E5%9D%9060%E5%88%86%E9%90%98%E7%AA%81%E8%A2%AB%E8%B6%95-1012980"},
+        {"title":"健身室陷阱","img2":"img13.webp","group":"消費","link":"https://www.tvb.com/life-c/%E6%B6%88%E5%A7%94%E6%9C%83%E6%AA%A2%E8%A6%9624%E5%B0%8F%E6%99%82%E5%81%A5%E8%BA%AB%E5%AE%A4--%E5%85%A9%E9%96%93-1%E5%80%8B%E6%9C%88Plan-%E8%A6%81%E7%B0%BD%E8%B6%B32%E5%80%8B%E6%9C%88-%E9%83%A8%E5%88%86%E5%96%AE%E6%9C%88%E6%94%B6%E8%B2%BB%E8%BC%83%E5%B9%B3%E5%9D%87%E6%9C%88%E8%B2%BB%E8%B2%B4%E9%80%BE%E5%80%8D-1012390","date":"2026-03-16"},
+        {"title":"枕頭評測","img2":"img14.webp","group":"消費","link":"https://www.tvb.com/life-c/%E6%B6%88%E5%A7%94%E6%9C%83-%E6%B6%88%E5%A7%94%E6%9C%83%E5%AF%A6%E6%B8%AC13%E6%AC%BE%E6%9E%95%E9%A0%AD-2%E6%AC%BE%E8%A8%98%E6%86%B6%E6%A3%89%E6%9E%95%E7%8D%B2%E6%9C%80%E9%AB%984-5%E5%88%86%E7%B8%BD%E8%A9%95-1%E5%80%8B%E9%AB%98%E5%88%86%E6%A8%A3%E6%9C%AC%E6%A5%B5%E4%BD%8E%E5%83%B9%E5%94%AE-99-9-1012388"},
+        {"title":"潤足霜評測","img2":"img17.webp","group":"消費","link":"https://www.tvb.com/life-c/%E6%B6%88%E5%A7%94%E6%9C%83%E6%BD%A4%E8%B6%B3%E9%9C%9C-10%E6%AC%BE%E6%BD%A4%E8%B6%B3%E9%9C%9C%E5%A4%A7%E6%AF%94%E6%8B%BC--88%E9%9F%93%E5%9C%8B%E8%B2%A8%E4%BF%9D%E6%BF%95%E5%8A%9B%E5%AA%B2%E7%BE%8E-260%E5%90%8D%E7%89%8C-3%E6%AC%BE%E6%AA%A2%E5%87%BA%E9%A6%99%E6%96%99%E8%87%B4%E6%95%8F%E7%89%A9-1011294","date":"2026-04-14"},
+    ]
+
+    return render_template("Healthyliving.html", banners=banners, articles=articles)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)

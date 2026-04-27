@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TVB{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+
+
+        .navbar {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            margin-right: 15px;
+        }
+
+        .search-bar {
+            background-color: #f2f2f2;
+            border-radius: 20px;
+            border: none;
+            padding: 5px 15px;
+        }
+
+        .main-banner-wrapper {
+            margin-top: 20px;
+        }
+
+        .carousel-inner {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner-content-box {
+            height: 400px;
+        }
+
+        .banner-img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .schedule-container {
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            background: #fff;
+        }
+
+        .schedule-time-card {
+            background-color: #0056b3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .channel-item {
+            flex: 1;
+            padding: 15px;
+            border-right: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .channel-item:last-child {
+            border-right: none;
+        }
+
+        .channel-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .channel-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-right: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .program-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .footer-rainbow-bar {
+            height: 4px;
+            width: 100%;
+            display: flex;
+            margin-top: 80px;
+        }
+
+        .rainbow-blue {
+            background-color: #00AEEF;
+            flex: 1;
+        }
+
+        .rainbow-green {
+            background-color: #8CC63F;
+            flex: 1;
+        }
+
+        .rainbow-red {
+            background-color: #ED1C24;
+            flex: 1;
+        }
+
+        .footer-main {
+            padding: 60px 0 30px;
+            background-color: #fff;
+        }
+
+        .footer-column h6 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .footer-link {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .footer-link:hover {
+            color: #0056b3;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+            margin-top: 40px;
+        }
+
+        .footer-logo {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .social-icons a {
+            color: #333;
+            margin-left: 15px;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+        .app-icons img {
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .social-icons a {
+            color: #333;
+            font-size: 20px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-icons a:hover {
+            color: #0056b3;
+        }
+
+        .custom-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            vertical-align: middle;
+            filter: grayscale(0%);
+        }
+
+        .custom-icon:hover {
+            filter: none;
+        }
+
+        .app-icons img {
+            height: 32px;
+            margin-right: 12px;
+            border-radius: 6px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .schedule-container {
+                flex-direction: column;
+            }
+
+            .schedule-time-card {
+                min-width: 100%;
+                padding: 10px;
+            }
+
+            .channel-item {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
+                    width="80">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">主頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">娛樂焦點</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('videos') }}">節目重溫</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('healthy_living') }}">健康生活</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('charity') }}">愛心基金</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">藝人</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">串流平台</a></li>
+                </ul>
+
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="input-group search-group me-3" style="width: 250px;">
+                        <input type="text" class="form-control border-end-0 search-input" placeholder="搜尋"
+                            style="background-color: #f2f5f7; border-radius: 25px 0 0 25px; border-color: #e1e8ed; padding-left: 20px;">
+                        <button class="btn border-start-0 search-btn" type="button"
+                            style="background-color: #f2f5f7; border-radius: 0 25px 25px 0; border-color: #e1e8ed; color: #333;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    {% if session.get('logged_in') %}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#memberProfileModal">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30"
+                            style="cursor: pointer; border-bottom: 2px solid #1890ff;" title="我的賬戶">
+                    </a>
+                    {% else %}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30"
+                            style="cursor: pointer;" title="登入/註冊">
+                    </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <div class="footer-rainbow-bar">
+        <div class="rainbow-blue"></div>
+        <div class="rainbow-green"></div>
+        <div class="rainbow-red"></div>
+    </div>
+    <footer class="footer-main">
+        <div class="container text-center">
+            <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/bc/TVB-Logo.svg/250px-TVB-Logo.svg.png"
+                width="50">
+            <p class="copyright">© 2026 TVB. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login / Register / Forgot Password / Member Profile Modals -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ff9800;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員登入</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-5 pt-4">
+                    <p class="text-center text-muted mb-4">請以 TVB 會員帳戶登入</p>
+                    <form action="/api/login" method="POST">
+                        <div class="mb-4">
+                            <input type="email" name="email" class="form-control rounded-pill py-2 px-4"
+                                placeholder="電郵" value="{{ request.cookies.get('last_user', '') }}" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" name="password" class="form-control rounded-pill py-2 px-4"
+                                placeholder="密碼" required>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 px-2">
+                            <div>
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
+                                <label for="rememberMe" class="text-muted">下次自動登入</label>
+                            </div>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal"
+                                class="text-primary text-decoration-none">忘記密碼?</a>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fs-5 mb-4">登入</button>
+                    </form>
+                    <hr class="mb-4">
+                    <div class="text-center">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
+                            class="text-primary text-decoration-none fw-bold">
+                            立即登記TVB會員帳戶 <i class="bi bi-info-circle-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ffcc00;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員登記</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-5 pt-4">
+                    <form action="/api/register" method="POST">
+                        <div class="mb-4">
+                            <input type="email" name="email" class="form-control rounded-pill py-2 px-4"
+                                placeholder="電郵" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" name="phone" class="form-control rounded-pill py-2 px-4"
+                                placeholder="聯絡電話 (選填)">
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" name="password" class="form-control rounded-pill py-2 px-4"
+                                placeholder="設定密碼" required>
+                            <small class="text-muted ms-3">*密碼必須包括至少8個字元</small>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary w-100 rounded-pill py-2 fs-5 mt-3 mb-4">提交登記</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                            class="text-secondary text-decoration-none">
+                            已經有帳戶？返回登入
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ff7a59;">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-5 pt-2 text-center">
+                    <div class="mb-4">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6146/6146586.png" width="50"
+                            alt="Reset Password Icon" style="opacity: 0.8;">
+                    </div>
+                    <h4 class="fw-bold mb-4">重設密碼</h4>
+                    <p class="text-muted mb-4" style="font-size: 14px;">請輸入TVB會員帳戶的登記電郵，我們會把重設密碼電郵發送到以下登記電郵地址。</p>
+                    <form action="/api/forgot_password" method="POST">
+                        <div class="mb-4 text-start">
+                            <input type="email" name="email" class="form-control rounded-pill py-2 px-4"
+                                placeholder="電郵" required>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2 w-50"
+                                data-bs-toggle="modal" data-bs-target="#loginModal">取消</button>
+                            <button type="submit" class="btn btn-dark rounded-pill px-4 py-2 w-50">發送</button>
+                        </div>
+                    </form>
+                    <p class="text-muted small mt-4">如有查詢，請電郵至 <a href="mailto:info@tvb.com"
+                            class="text-info text-decoration-none">info@tvb.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="memberProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ccc;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員專區</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-4 pt-2">
+                    <ul class="nav nav-tabs w-100 mb-4 border-bottom-0" id="memberTabs" role="tablist">
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link active w-100 fw-bold border-0 border-bottom border-primary border-3"
+                                id="account-tab" data-bs-toggle="tab" data-bs-target="#account-tab-pane" type="button"
+                                role="tab" style="color: #333;">我的賬戶</button>
+                        </li>
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link w-100 fw-bold border-0" id="password-tab" data-bs-toggle="tab"
+                                data-bs-target="#password-tab-pane" type="button" role="tab"
+                                style="color: #aaa;">更改密碼</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="memberTabsContent">
+                        <div class="tab-pane fade show active" id="account-tab-pane" role="tabpanel"
+                            aria-labelledby="account-tab" tabindex="0">
+                            <form action="/api/update_profile" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">電郵</label>
+                                    <div class="d-flex justify-content-between align-items-center bg-light rounded-pill py-2 px-4 border">
+                                        <span class="text-secondary">{{ user.email if user else '1123134774sasa@gmail.com' }}</span>
+                                        <span class="text-success small fw-bold">✔ 已驗證</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">暱稱</label>
+                                    <input type="text" name="username" class="form-control rounded-pill py-2 px-4"
+                                        value="{{ user.username if user else '1123134774' }}" placeholder="請輸入暱稱">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-muted small mb-1 px-2">手機號碼</label>
+                                    <input type="text" name="phone" class="form-control rounded-pill py-2 px-4"
+                                        value="{{ user.phone if user else '' }}" placeholder="請輸入手機號碼">
+                                </div>
+
+                                <div class="mb-4 px-2" style="font-size: 13px;">
+                                    <div class="text-muted mb-1">*如新增或更改香港手提電話號碼，需要以SMS驗證</div>
+                                    <div class="text-danger">*相同的香港手提電話號碼只能在一個賬戶中驗證，曾在其他賬戶中驗證之相同手機號碼則會被還原成「未驗證」的狀態。</div>
+                                </div>
+
+                                <div class="d-flex gap-2 justify-content-center mb-4 flex-wrap">
+                                    <button type="submit" class="btn btn-dark rounded-pill px-4 py-2">確定更改資料</button>
+                                    <button type="reset" class="btn btn-outline-dark rounded-pill px-4 py-2">取消更改資料</button>
+                                    <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2"
+                                        data-bs-dismiss="modal">返回</button>
+                                </div>
+                            </form>
+
+                            <div class="text-center mb-2">
+                                <a href="/api/logout" class="btn btn-outline-danger rounded-pill px-5 py-1">登出</a>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="password-tab-pane" role="tabpanel" aria-labelledby="password-tab" tabindex="0">
+                            <form action="/api/change_password" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">舊密碼</label>
+                                    <input type="password" name="current_password" class="form-control rounded-pill py-2 px-4" placeholder="輸入舊密碼" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">新密碼</label>
+                                    <input type="password" name="new_password" class="form-control rounded-pill py-2 px-4" placeholder="輸入新密碼" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-muted small mb-1 px-2">確認新密碼</label>
+                                    <input type="password" name="confirm_password" class="form-control rounded-pill py-2 px-4" placeholder="再次輸入新密碼" required>
+                                </div>
+                                <div class="d-flex gap-2 justify-content-center mb-4 flex-wrap">
+                                    <button type="submit" class="btn btn-dark rounded-pill px-4 py-2">更新密碼</button>
+                                    <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2" data-bs-dismiss="modal">取消</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePwd(element) {
+            const input = element.parentElement.querySelector('input');
+            if (input.type === "password") {
+                input.type = "text";
+                element.innerText = "隱藏";
+            } else {
+                input.type = "password";
+                element.innerText = "顯示";
+            }
+        }
+
+        const allModals = document.querySelectorAll('.modal');
+        allModals.forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function () {
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+            });
+        });
+    </script>
+</body>
+</html>
+
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ffcc00;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員登記</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-5 pt-4">
+                    <form action="/api/register" method="POST">
+                        <div class="mb-4">
+                            <input type="email" name="email" class="form-control rounded-pill py-2 px-4"
+                                placeholder="電郵" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" name="phone" class="form-control rounded-pill py-2 px-4"
+                                placeholder="聯絡電話 (選填)">
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" name="password" class="form-control rounded-pill py-2 px-4"
+                                placeholder="設定密碼" required>
+                            <small class="text-muted ms-3">*密碼必須包括至少8個字元</small>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary w-100 rounded-pill py-2 fs-5 mt-3 mb-4">提交登記</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                            class="text-secondary text-decoration-none">
+                            已經有帳戶？返回登入
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ff7a59;">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-5 pt-2 text-center">
+                    <div class="mb-4">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6146/6146586.png" width="50"
+                            alt="Reset Password Icon" style="opacity: 0.8;">
+                    </div>
+                    <h4 class="fw-bold mb-4">重設密碼</h4>
+                    <p class="text-muted mb-4" style="font-size: 14px;">請輸入TVB會員帳戶的登記電郵，我們會把重設密碼電郵發送到以下登記電郵地址。</p>
+                    <form action="/api/forgot_password" method="POST">
+                        <div class="mb-4 text-start">
+                            <input type="email" name="email" class="form-control rounded-pill py-2 px-4"
+                                placeholder="電郵" required>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2 w-50"
+                                data-bs-toggle="modal" data-bs-target="#loginModal">取消</button>
+                            <button type="submit" class="btn btn-dark rounded-pill px-4 py-2 w-50">發送</button>
+                        </div>
+                    </form>
+                    <p class="text-muted small mt-4">如有查詢，請電郵至 <a href="mailto:info@tvb.com"
+                            class="text-info text-decoration-none">info@tvb.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="memberProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: 4px solid #ccc;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員專區</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="position: absolute; right: 20px; top: 20px;"></button>
+                </div>
+                <div class="modal-body p-4 pt-2">
+
+                    <ul class="nav nav-tabs w-100 mb-4 border-bottom-0" id="memberTabs" role="tablist">
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link active w-100 fw-bold border-0 border-bottom border-primary border-3"
+                                id="account-tab" data-bs-toggle="tab" data-bs-target="#account-tab-pane" type="button"
+                                role="tab" style="color: #333;">我的賬戶</button>
+                        </li>
+                        <li class="nav-item flex-fill text-center" role="presentation">
+                            <button class="nav-link w-100 fw-bold border-0" id="password-tab" data-bs-toggle="tab"
+                                data-bs-target="#password-tab-pane" type="button" role="tab"
+                                style="color: #aaa;">更改密碼</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="memberTabsContent">
+
+                        <div class="tab-pane fade show active" id="account-tab-pane" role="tabpanel"
+                            aria-labelledby="account-tab" tabindex="0">
+                            <form action="/api/update_profile" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">電郵</label>
+                                    <div
+                                        class="d-flex justify-content-between align-items-center bg-light rounded-pill py-2 px-4 border">
+                                        <span class="text-secondary">{{ user.email if user else
+                                            '1123134774sasa@gmail.com' }}</span>
+                                        <span class="text-success small fw-bold">✔ 已驗證</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small mb-1 px-2">暱稱</label>
+                                    <input type="text" name="username" class="form-control rounded-pill py-2 px-4"
+                                        value="{{ user.username if user else '1123134774' }}" placeholder="請輸入暱稱">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-muted small mb-1 px-2">手機號碼</label>
+                                    <input type="text" name="phone" class="form-control rounded-pill py-2 px-4"
+                                        value="{{ user.phone if user else '' }}" placeholder="請輸入手機號碼">
+                                </div>
+
+                                <div class="mb-4 px-2" style="font-size: 13px;">
+                                    <div class="text-muted mb-1">*如新增或更改香港手提電話號碼，需要以SMS驗證</div>
+                                    <div class="text-danger">*相同的香港手提電話號碼只能在一個賬戶中驗證，曾在其他賬戶中驗證之相同手機號碼則會被還原成「未驗證」的狀態。
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2 justify-content-center mb-4 flex-wrap">
+                                    <button type="submit" class="btn btn-dark rounded-pill px-4 py-2">確定更改資料</button>
+                                    <button type="reset"
+                                        class="btn btn-outline-dark rounded-pill px-4 py-2">取消更改資料</button>
+                                    <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2"
+                                        data-bs-dismiss="modal">返回</button>
+                                </div>
+                            </form>
+
+                            <div class="text-center mb-2">
+                                <a href="/api/logout" class="btn btn-outline-danger rounded-pill px-5 py-1">登出</a>
+                            </div>
+                        </div>
+</div> 
+                    </div> </div> </div> </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 1. 密碼顯示/隱藏切換邏輯
+        function togglePwd(element) {
+            const input = element.parentElement.querySelector('input');
+            if (input.type === "password") {
+                input.type = "text";
+                element.innerText = "隱藏";
+            } else {
+                input.type = "password";
+                element.innerText = "顯示";
+            }
+        }
+
+        // 2. 防呆機制：解決多個 Modal 切換導致背景鎖死的 Bug
+        // 當一個 Modal 關閉並開啟另一個時，強制清理殘留的遮罩層
+        const allModals = document.querySelectorAll('.modal');
+        allModals.forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function () {
+                // 如果發現點擊切換後背景還是灰的，強制移除遮罩類名
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+            });
+        });
+    </script>
+</body>
+</html>
