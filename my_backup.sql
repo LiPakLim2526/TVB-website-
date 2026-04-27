@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `access_logs`
+--
+
+DROP TABLE IF EXISTS `access_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `access_logs` (
+  `log_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `login_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`log_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `access_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `access_logs`
+--
+
+LOCK TABLES `access_logs` WRITE;
+/*!40000 ALTER TABLE `access_logs` DISABLE KEYS */;
+INSERT INTO `access_logs` VALUES (1,11,'2026-04-27 10:04:56','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36'),(2,12,'2026-04-27 10:05:05','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36'),(3,12,'2026-04-27 10:24:35','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36'),(4,12,'2026-04-27 10:34:39','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36'),(5,12,'2026-04-27 10:34:52','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36'),(6,12,'2026-04-27 10:35:38','172.18.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36');
+/*!40000 ALTER TABLE `access_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `banners`
 --
 
@@ -195,8 +224,13 @@ CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,6 +239,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'us','us@gmail.com','123','scrypt:32768:8:1$AMIxhvwwyt1DBpDF$9463f51f3065babe2ff27472846676bd9c928bdce1c67c492c7da4d7cf650a4335906ba8007ec64747a590158d9667970b6b36185a188bb14add162fe308fca4',0,'2026-04-25 07:45:46','2026-04-25 07:45:46'),(2,'us','us@gmail.com','123','scrypt:32768:8:1$8M5jiwwUnu3BARcO$02ced301246169191dc12f28bae7df8d308a212803d1d0d45391238461445da4e02eb8bdc258878c1393c998beb3368895891e40333fd83b1f1a8d09fb361b16',0,'2026-04-25 07:49:21','2026-04-25 07:49:21'),(3,'user','user@gmail.com','1233','scrypt:32768:8:1$IH2Blg7cYAweiinz$a72a4aeeb6a43f784659b2fd186644c4870b659661eeadf0f6b71764351196b3c50635446517e3fc20095033455a1c5b67260b34506285f7863ff60b60691baf',0,'2026-04-25 07:49:32','2026-04-25 07:49:32'),(4,'user','user@gmail.com','1233','scrypt:32768:8:1$d5I1SQJKibdG00st$523b43712c07e3ba1dcfe36603374d94a8d15fdcaafec8c559e778f25d766c5f3343a19887c8a5ded6a3c93a1c9300f4885406cde968ba02e5af50fba9cc220c',0,'2026-04-25 07:50:48','2026-04-25 07:50:48'),(5,'user','user@gmail.com','1233','scrypt:32768:8:1$iiavPH9sGxlAlGwp$11350d6aeaaf4fb04b86175e9c4bbb4c46afd8d6f6a1063a6583fa4e9fdf25e0aa6bb3b6127301dad1fc75f3618f646e99054cf328e18dc7269ca7738e4f88e5',0,'2026-04-25 07:50:55','2026-04-25 07:50:55'),(6,'user','user@gmail.com','1233','scrypt:32768:8:1$qLHvtYIJAGCfMH4C$1faa6accd58c753c6d19fb86f91db18a53f50bb15795213b320649be7ef83e0d87e5a735c5764eb63abd6c420785ab316347962ce21eb60a389fd07ff3e135be',0,'2026-04-25 07:51:17','2026-04-25 07:51:17'),(7,'user-1','user-1@gamil.com','1233','scrypt:32768:8:1$BXlmkXJ291hhABdi$e1907bc80d4a0fcaa4df1a1aaa8c281d2d48ee92f7615e378dc512f4ae27b34aab0510ec4a384cc0ea1663bf93bd9e7e4fe4f16f6bacc8984b993d93de2be5e0',0,'2026-04-25 07:51:39','2026-04-25 07:51:39'),(8,'ximenxiaotian','ximenxiaotian@gmail.com','23143214','scrypt:32768:8:1$QAmfxpP1sX52jde2$8f20cec37df56779f03c9dc90c640a30f3431165856649f775b06ec9aece9f86a14d270b3f2c69edfa6df9ceeb052a104273a74a97b81483e1ab6c29585d746b',0,'2026-04-25 07:58:20','2026-04-25 07:58:20'),(9,'ximenxiaotian','ximenxiaotian@gmail.com','1234124124','scrypt:32768:8:1$KTaVLpfTcoZpiIss$224291000b4da3716ff4c8db5e8378fc242ae2ee098e61bf79655b733bbb570d86a5ca1b66f014b9f710558500b04816a540de0fc9d7bae11d60efd30b0020c6',0,'2026-04-25 08:02:35','2026-04-25 08:02:35'),(10,'123','123@gmail.com','12314','scrypt:32768:8:1$dIQvI4nHpEzBmxjf$e73454e19a3eae677a4126d213e5b06a1bfcbc6295d40cd8b7e157a013159aa8b2e1dd542bad3f3652e0c97b7f7ff6f47d150c278d231884fde06bcc5ba6ac89',0,'2026-04-25 09:48:02','2026-04-25 09:48:02'),(11,'12344','1234@gmail.com','123456785','scrypt:32768:8:1$0JZTB2a6TmL2rKPO$66e312bb41aa14a8711090746ae63f6f43428b5950e74b80e53e0d4dce6f03a8d3a7c7b82866ad1f0b2954e08ada7c434f10902523bda02173bcec9ae2e1ea05',0,'2026-04-27 08:04:52','2026-04-27 09:11:36'),(12,'1123134774sasa','1123134774sasa@gmail.com','23143214','scrypt:32768:8:1$MJ1DRyO7WCYdTCTY$60f0dfc33c7a02b36363d90599dc982dbbf6a7fd5947d134bbb6600e112a9e1da3e5b2e035ac23983cf63d046bc71eb1077350ab5f823b4a8df8d4d776a9151b',1,'2026-04-27 09:28:00','2026-04-27 09:33:08');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-25  6:02:00
+-- Dump completed on 2026-04-27 14:14:50
