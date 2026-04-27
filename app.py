@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, flash, session
-from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment, DataCenterItem
+from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment, DataCenterItem, AccessLog
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, redirect, url_for, flash
 from flask_mail import Mail, Message
@@ -89,6 +89,21 @@ def news():
         ("大埔私樓破壞男玩殘街坊 大堂小便倒垃圾黐𨋢門犯眾憎 有立案法團前主席爸爸撐腰？", "熱話", "8小時前", "/static/images/hot6.jpg","https://www.tvb.com/hottopic-c/%E5%A4%A7%E5%9F%94%E7%A7%81%E6%A8%93%E7%A0%B4%E5%A3%9E%E7%94%B7%E7%8E%A9%E6%AE%98%E8%A1%97%E5%9D%8A-%E5%A4%A7%E5%A0%82%E5%B0%8F%E4%BE%BF%E5%80%92%E5%9E%83%E5%9C%BE%E9%BB%90%F0%A8%8B%A2%E9%96%80%E7%8A%AF%E7%9C%BE%E6%86%8E-%E6%9C%89%E7%AB%8B%E6%A1%88%E6%B3%95%E5%9C%98%E5%89%8D%E4%B8%BB%E5%B8%AD%E7%88%B8%E7%88%B8%E6%92%90%E8%85%B0--1013027")
     ]
     return render_template('news.html', artist_news=artist_news, artist_news_data=artist_news_data, funny_data=funny_data, hot_data=hot_data)
+
+@app.route('/admin/logs')
+def admin_logs():
+    if not session.get('logged_in') or not session.get('is_admin'):
+        flash("您沒有權限訪問此管理頁面！", "danger")
+        return redirect(url_for('index'))
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+
+    pagination = AccessLog.query.order_by(AccessLog.login_time.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    
+    logs = pagination.items
+
+    return render_template('admin_logs.html', logs=logs, pagination=pagination)
 
 @app.route('/admin/news', methods=['GET', 'POST'])
 def admin_news():

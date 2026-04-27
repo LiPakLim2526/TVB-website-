@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>存取紀錄管理 - TVB 後台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">登入存取紀錄 (Access Logs)</h3>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-dark rounded-pill px-4">返回前台主頁</a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0 align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Log ID</th>
+                            <th scope="col" class="py-3">登入用戶</th>
+                            <th scope="col" class="py-3">登入時間</th>
+                            <th scope="col" class="py-3">IP 地址</th>
+                            <th scope="col" class="py-3" style="max-width: 300px;">裝置 / 瀏覽器資訊</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td class="px-4">{{ log.log_id }}</td>
+                            <td>
+                                <span class="fw-bold">{{ log.user.username if log.user else '未知用戶' }}</span><br>
+                                <small class="text-muted">{{ log.user.email if log.user else '無電郵資料' }} (ID: {{ log.user_id }})</small>
+                            </td>
+                            <td>{{ log.login_time.strftime('%Y-%m-%d %H:%M:%S') if log.login_time else '未知時間' }}</td>
+                            <td><span class="badge bg-secondary">{{ log.ip_address }}</span></td>
+                            <td class="text-truncate text-muted small" style="max-width: 300px;" title="{{ log.user_agent }}">
+                                {{ log.user_agent }}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">目前尚無任何登入紀錄。</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if pagination.pages > 1 %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_logs', page=pagination.prev_num) }}">上一頁</a>
+            </li>
+            
+            {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    <li class="page-item {% if pagination.page == page_num %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin_logs', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+
+            <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_logs', page=pagination.next_num) }}">下一頁</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
