@@ -37,6 +37,8 @@
         .charity-card-img { width: 100%; object-fit: cover; }
         .charity-tag { font-size: 12px; color: #888; display: block; }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -71,10 +73,9 @@
                     </button>
                 </div>
 
-                <a href="{{ url_for('login_page') }}" class="user-profile-icon d-flex align-items-center justify-content-center" 
-                        style="width: 40px; height: 40px; border: 1px solid #e1e8ed; border-radius: 50%; color: #333; text-decoration: none;">
-                        <i class="far fa-user" style="font-size: 20px;"></i>
-                        <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="cursor: pointer;">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="user-profile-icon d-flex align-items-center justify-content-center"
+                    style="width: 40px; height: 40px; border: 1px solid #e1e8ed; border-radius: 50%; color: #333; text-decoration: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="cursor: pointer;">
                 </a>
             </div>
         </div>
@@ -240,5 +241,98 @@
         </div>
     </div>
 </footer>
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 15px; border: 4px solid #ff9800;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員登入</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 20px;"></button>
+      </div>
+      <div class="modal-body p-5 pt-4">
+        <p class="text-center text-muted mb-4">請以 TVB 會員帳戶登入</p>
+        <form action="/api/login" method="POST">
+          <div class="mb-4">
+            <input type="email" name="email" class="form-control rounded-pill py-2 px-4" placeholder="電郵" required>
+          </div>
+          <div class="mb-4">
+            <input type="password" name="password" class="form-control rounded-pill py-2 px-4" placeholder="密碼" required>
+          </div>
+          <div class="d-flex justify-content-between mb-4 px-2">
+            <div>
+              <input type="checkbox" id="rememberMe"> <label for="rememberMe" class="text-muted">下次自動登入</label>
+            </div>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" class="text-primary text-decoration-none">忘記密碼?</a>
+          </div>
+          <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fs-5 mb-4">登入</button>
+        </form>
+        <hr class="mb-4">
+        <div class="text-center">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" class="text-primary text-decoration-none fw-bold">
+            立即登記TVB會員帳戶 <i class="bi bi-info-circle-fill"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="border-radius: 15px; border: 4px solid #ffcc00;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title w-100 text-center fw-bold fs-4 mt-3">會員登記</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 20px;"></button>
+      </div>
+      <div class="modal-body p-5 pt-4">
+        <form action="/api/register" method="POST">
+          <div class="mb-4">
+            <input type="email" name="email" class="form-control rounded-pill py-2 px-4" placeholder="電郵" required>
+          </div>
+          <div class="mb-4">
+            <input type="text" name="phone" class="form-control rounded-pill py-2 px-4" placeholder="聯絡電話 (選填)">
+          </div>
+          <div class="mb-4">
+            <input type="password" name="password" class="form-control rounded-pill py-2 px-4" placeholder="設定密碼" required>
+            <small class="text-muted ms-3">*密碼必須包括至少8個字元</small>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fs-5 mt-3 mb-4">提交登記</button>
+        </form>
+        <div class="text-center mt-3">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-secondary text-decoration-none">
+            已經有帳戶？返回登入
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 15px; border: 4px solid #ff7a59;">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 20px;"></button>
+      </div>
+      <div class="modal-body p-5 pt-2 text-center">
+        <div class="mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/6146/6146586.png" width="50" alt="Reset Password Icon" style="opacity: 0.8;">
+        </div>
+        <h4 class="fw-bold mb-4">重設密碼</h4>
+        <p class="text-muted mb-4" style="font-size: 14px;">請輸入TVB會員帳戶的登記電郵，我們會把重設密碼電郵發送到以下登記電郵地址。</p>
+        <form action="/api/forgot_password" method="POST">
+          <div class="mb-4 text-start">
+            <input type="email" name="email" class="form-control rounded-pill py-2 px-4" placeholder="電郵" required>
+          </div>
+          <div class="d-flex justify-content-center gap-3 mb-4">
+            <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2 w-50" data-bs-toggle="modal" data-bs-target="#loginModal">取消</button>
+            <button type="submit" class="btn btn-dark rounded-pill px-4 py-2 w-50">發送</button>
+          </div>
+        </form>
+        <p class="text-muted small mt-4">如有查詢，請電郵至 <a href="mailto:info@tvb.com" class="text-info text-decoration-none">info@tvb.com</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

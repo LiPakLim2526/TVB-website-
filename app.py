@@ -1,10 +1,24 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, flash, session
 from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment, DataCenterItem
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, redirect, url_for, flash
+from flask_mail import Mail, Message
 import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'tvb_charity_2026_super_secret_key'
 
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your_email_password'
+app.config['MAIL_DEFAULT_SENDER'] = '你的電郵@gmail.com'
+
+mail = Mail(app)
+
+app.config['SECRET_KEY'] = 'tvb_charity_secret_key_2026_very_secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootroot@db:3306/tvb_charity_db?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -113,9 +127,81 @@ def edit_news(id):
         
     return render_template('admin_news_edit.html', article=article)
 
-@app.route('/login')
-def login_page(): 
-    return render_template('login.html')
+@app.route('/api/register', methods=['POST'])
+def api_register():
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    raw_password = request.form.get('password')
+
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        flash("這組電郵已經註冊過囉，請直接登入！", "warning")
+        return redirect(url_for('index', show_login=1))
+
+    hashed_password = generate_password_hash(raw_password)
+    new_user = User(
+        email=email,
+        username=email.split('@')[0],
+        phone=phone,
+        password=hashed_password
+    )
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+
+        try:
+            msg = Message("【TVB 愛心基金】會員註冊成功！", recipients=[email])
+            msg.body = f"親愛的 {new_user.username} 您好：\n\n感謝您註冊 TVB 愛心基金！您的會員帳號已成功開通。\n\n請隨時回來關注我們的最新公益活動，一起傳遞愛心。\n\nTVB 愛心基金團隊 敬上"
+            mail.send(msg)
+            email_status = "歡迎信已寄至您的信箱！"
+        except Exception as mail_error:
+            email_status = "(提醒：歡迎信發送失敗，但您的帳號已可使用)"
+            print(f"發信錯誤: {mail_error}")
+
+        flash(f"註冊成功！{email_status} 請嘗試登入。", "success")
+        return redirect(url_for('index', show_login=1))
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f"系統發生錯誤，註冊失敗：{str(e)}", "danger")
+        return redirect(url_for('index'))
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    
+    user = User.query.filter_by(email=email).first()
+
+    if user and check_password_hash(user.password, password):
+    
+        session['user_id'] = user.user_id  
+        session['is_admin'] = user.is_admin 
+        session['logged_in'] = True
+        return redirect(request.referrer or url_for('index'))
+    else:
+        return "電郵或密碼錯誤！", 401
+
+@app.route('/api/forgot_password', methods=['POST'])
+def api_forgot_password():
+    email = request.form.get('email')
+    user = User.query.filter_by(email=email).first()
+    
+    if user:
+        try:
+            
+            flash(f"重設密碼的連結已發送至 {email}，請查收！", "success")
+            
+            return redirect(url_for('index', show_login=1))
+            
+        except Exception as e:
+            flash(f"發送失敗：{str(e)}", "error")
+            return redirect(url_for('index', show_login=1))
+            
+    else:
+        flash("找不到此電郵，請確認是否輸入正確。", "error")
+        return redirect(url_for('index', show_login=1))
 
 @app.route('/charity')
 def charity():
