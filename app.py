@@ -24,6 +24,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+@app.context_processor
+def inject_user():
+    """
+    全局上下文处理器：
+    在所有模板中自动注入当前登录的 user 对象，
+    无需在每个 render_template 中手动传递 user=user。
+    """
+    user = None
+    if session.get('logged_in') and session.get('user_id'):
+        user = User.query.get(session.get('user_id'))
+    
+    return dict(user=user)
 
 @app.route('/')
 def index():
@@ -202,6 +214,72 @@ def api_forgot_password():
     else:
         flash("找不到此電郵，請確認是否輸入正確。", "error")
         return redirect(url_for('index', show_login=1))
+
+@app.route('/api/logout')
+def api_logout():
+    session.pop('user_id', None)
+    session.pop('is_admin', None)
+    session.pop('logged_in', None)
+    flash("您已成功登出！", "success")
+    return redirect(url_for('index'))
+
+@app.route('/api/update_profile', methods=['POST'])
+def api_update_profile():
+    if not session.get('logged_in'):
+        flash("請先登入！", "warning")
+        return redirect(url_for('index', show_login=1))
+
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+
+    if user:
+        new_username = request.form.get('username')
+        new_phone = request.form.get('phone')
+        
+        user.username = new_username
+        user.phone = new_phone
+        
+        try:
+            db.session.commit()
+            flash("資料更新成功！", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"資料更新失敗：{str(e)}", "danger")
+            
+    return redirect(request.referrer or url_for('index'))
+
+@app.route('/api/change_password', methods=['POST'])
+def api_change_password():
+    if not session.get('logged_in'):
+        flash("請先登入！", "warning")
+        return redirect(url_for('index', show_login=1))
+
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+
+    if user:
+        old_password = request.form.get('old_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if new_password != confirm_password:
+            flash("新密碼與確認密碼不一致！", "danger")
+            return redirect(request.referrer or url_for('index'))
+
+        if not check_password_hash(user.password, old_password):
+            flash("舊密碼錯誤！", "danger")
+            return redirect(request.referrer or url_for('index'))
+
+        user.password = generate_password_hash(new_password)
+        
+        try:
+            db.session.commit()
+            flash("密碼更改成功！請妥善保管新密碼。", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"密碼更改失敗：{str(e)}", "danger")
+
+    return redirect(request.referrer or url_for('index'))
 
 @app.route('/charity')
 def charity():
