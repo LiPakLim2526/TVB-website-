@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, session
+from flask import Flask, render_template, redirect, url_for, flash, session, make_response, request
 from models import db, User, UserProfile, Category, Video, Tag, NewsArticle, Banner, Comment, DataCenterItem, AccessLog
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, redirect, url_for, flash
@@ -198,15 +198,35 @@ def api_register():
 def api_login():
     email = request.form.get('email')
     password = request.form.get('password')
+    remember_me = request.form.get('rememberMe')
     
     user = User.query.filter_by(email=email).first()
 
     if user and check_password_hash(user.password, password):
-    
-        session['user_id'] = user.user_id  
-        session['is_admin'] = user.is_admin 
+        ip_address = request.remote_addr
+        user_agent = request.headers.get('User-Agent')
+
+        new_log = AccessLog(
+            user_id=user.user_id,
+            ip_address=ip_address,
+            user_agent=user_agent
+        )
+        db.session.add(new_log)
+        db.session.commit()
+
+        resp = make_response(redirect(request.referrer or url_for('index')))
+
+        if remember_me:
+            resp.set_cookie('last_user', user.email, max_age=30*24*3600)
+        else:
+            resp.delete_cookie('last_user')
+
+        session['user_id'] = user.user_id
+        session['is_admin'] = user.is_admin
         session['logged_in'] = True
-        return redirect(request.referrer or url_for('index'))
+        
+        return resp
+    
     else:
         return "電郵或密碼錯誤！", 401
 
@@ -473,6 +493,28 @@ def update_datacenter_order(item_id):
         item.display_order = new_order
         db.session.commit()
     return redirect(url_for('admin_datacenter'))
+
+@app.route('/set_user_cookie')
+def set_user_cookie():
+    resp = make_response("Cookie 已設定！")
+    
+    resp.set_cookie('last_user', '1123134774sasa', max_age=3600)
+    
+    return resp
+
+@app.route('/get_user_cookie')
+def get_user_cookie():
+    last_user = request.cookies.get('last_user')
+    
+    if last_user:
+        return f"歡迎回來，上次登入的是：{last_user}"
+    return "找不到 Cookie 紀錄。"
+
+@app.route('/delete_user_cookie')
+def delete_user_cookie():
+    resp = make_response("Cookie 已清除！")
+    resp.delete_cookie('last_user')
+    return resp
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)
